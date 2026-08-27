@@ -1,0 +1,47 @@
+* `rounded-none` (Siku tajam/kotak 0px)
+* `rounded-sm` (Sedikit melengkung - 2px)
+* `rounded` (Kelengkungan standar - 4px)
+* `rounded-md` (Menengah - 6px)
+* `rounded-lg` (Besar - 8px)
+* `rounded-xl` (Lebih besar - 12px)
+* `rounded-2xl` (Sangat melengkung - 16px)
+* `rounded-3xl` (Ekstra melengkung - 24px)
+* `rounded-full` (Membentuk lingkaran bulat sempurna atau bentuk oval seperti pil)
+
+
+* `text-xs` (Extra Small - 12px)
+* `text-sm` (Small - 14px)
+* `text-base` (Standar/Normal - 16px)
+* `text-lg` (Large - 18px)
+* `text-xl` (Extra Large - 20px)
+* `text-2xl` (24px)
+* `text-3xl` (30px)
+* `text-4xl` (36px)
+* *(...terus berlanjut hingga `text-9xl` untuk judul yang sangat raksasa)*
+
+
+* `shadow-sm` (Bayangan sangat tipis, cocok untuk tombol kecil)
+* `shadow` (Bayangan standar)
+* `shadow-md` (Menengah, cocok untuk kartu kecil)
+* `shadow-lg` (Besar, bayangan lebih menyebar)
+* `shadow-xl` (Lebih besar dan lebih jauh dari elemen)
+* `shadow-2xl` (Bayangan paling tebal dan menyebar luas)
+* `shadow-inner` (Bayangan jatuh ke *dalam* kotak, memberi efek cekung)
+
+
+* `blur-sm` (Buram tipis)
+* `blur` (Buram standar)
+* `blur-md` (Menengah)
+* `blur-lg` (Buram pekat)
+* `blur-xl`
+* `blur-2xl`
+* `blur-3xl` (Sangat buram hingga warna menyatu/bias)
+
+
+* `max-w-xs` (Maksimal 320px)
+* `max-w-sm` (Maksimal 384px)
+* `max-w-md` (Maksimal 448px)
+* `max-w-lg` (Maksimal 512px)
+* `max-w-xl` (Maksimal 576px)
+* `max-w-2xl` hingga `max-w-7xl` (Untuk batas ukuran kontainer artikel atau layout utama)
+* `max-w-full` (Maksimal 100% lebar layar)
