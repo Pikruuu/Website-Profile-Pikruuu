@@ -4,6 +4,41 @@ import { KartuTipeCol } from "@/components/Kartu";
 import Link from "next/link";
 import SumProject from "@/components/SumProject";
 
+
+const PROJECTS = [
+    {
+        id: 1,
+        nomor: "01",
+        title: "IoT/Robotics",
+        href: "https://voxsight.id/",
+        deskripsi: "VoxSight AI adalah kacamata pintar berbasis AI untuk membantu penyandang tunanetra mengenali lingkungan sekitar secara real-time melalui suara.",
+        photo: "/images/iot01.png",
+        category: "iot/robotic",
+    },
+];
+
+const PUBLIKASI = [
+    {
+        id: 1,
+        nomor: "01",
+        title: "Article",
+        href: "https://share.google/hRmtIKI7AgaHt9w4C",
+        deskripsi: "Modul Implementasi Dan Sosialisasi Teknologi Kacamata Pintar Berbasis Ai Interaktif Bagi Penyandang Disabilitas Netra Di Lingkungan Slb A Yayasan Pendidikan Anak Buta Surabaya.",
+        photo: "/images/Article01.png",
+        category: "media",
+    },
+    {
+        id: 2,
+        nomor: "02",
+        title: "Article",
+        href: "https://share.google/bqT0Cl4RZZ8Cf3bNC",
+        deskripsi: "Surabaya, 6 Maret 2026 — Tim Pengabdian Masyarakat Telkom University Surabaya Kenalkan Kacamata Pintar VoxSight AI kepada Siswa Tunanetra di SLB A YPAB Surabaya",
+        photo: "/images/Article02.png",
+        category: "media",
+    },
+];
+
+
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center px-8 bg-putih">
@@ -44,36 +79,16 @@ export default function Home() {
           </div>
         </div>
         <ul className="flex flex-row gap-4">
-          <KartuTipeCol
-            photo="/images/project1.png"
-            nomor="01"
-            title="IoT/Robotics"
-            deskripsi="IoT dan robotika adalah teknologi yang mengintegrasikan jaringan perangkat cerdas pengumpul data dengan mesin otomatis untuk mengeksekusi tugas fisik secara mandiri.">
-          </KartuTipeCol>
-          <KartuTipeCol
-            photo="/images/project1.png"
-            nomor="02"
-            title="IoT/Robotics"
-            deskripsi="IoT dan robotika adalah teknologi yang mengintegrasikan jaringan perangkat cerdas pengumpul data dengan mesin otomatis untuk mengeksekusi tugas fisik secara mandiri.">
-          </KartuTipeCol>
-          <KartuTipeCol
-            photo="/images/project1.png"
-            nomor="03"
-            title="IoT/Robotics"
-            deskripsi="IoT dan robotika adalah teknologi yang mengintegrasikan jaringan perangkat cerdas pengumpul data dengan mesin otomatis untuk mengeksekusi tugas fisik secara mandiri.">
-          </KartuTipeCol>
-          <KartuTipeCol
-            photo="/images/project1.png"
-            nomor="04"
-            title="IoT/Robotics"
-            deskripsi="IoT dan robotika adalah teknologi yang mengintegrasikan jaringan perangkat cerdas pengumpul data dengan mesin otomatis untuk mengeksekusi tugas fisik secara mandiri.">
-          </KartuTipeCol>
-          <KartuTipeCol
-            photo="/images/project1.png"
-            nomor="05"
-            title="IoT/Robotics"
-            deskripsi="IoT dan robotika adalah teknologi yang mengintegrasikan jaringan perangkat cerdas pengumpul data dengan mesin otomatis untuk mengeksekusi tugas fisik secara mandiri.">
-          </KartuTipeCol>
+          {[...PROJECTS, ...PUBLIKASI].slice(0, 3).map((item) => (
+            <KartuTipeCol
+              key={`${item.category}-${item.id}`}
+              photo={item.photo}
+              nomor={item.nomor}
+              title={item.title}
+              href={item.href}
+              deskripsi={item.deskripsi}
+            />
+          ))}
         </ul>
         <div className="h-4"/>
         <SumProject/>

@@ -7,7 +7,6 @@ import { usePathname } from "next/navigation";
 const NAV_ITEMS = [
     { href: "/", label: "Home" },
     { href: "/about", label: "About" },
-    { href: "/skill", label: "Skill" },
     { href: "/project", label: "Project" },
 ];
 
@@ -22,14 +21,14 @@ export default function Navbar() {
                 </h2>
             </div>
 
-            <ul className="flex flex-row gap-8">
+            <ul className="flex flex-row gap-12">
                 {NAV_ITEMS.map((item) => {
                     const isActive = pathname === item.href;
                     return (
                         <li key={item.href} className="relative flex flex-col items-center">
                             <Link
                                 href={item.href}
-                                className={`inline-block transition-all duration-600 hover:opacity-75 hover:scale-120 ${
+                                className={`inline-block transition-all duration-700 hover:opacity-75 hover:scale-120 ${
                                     isActive ? "font-bold" : ""
                                 }`}
                             >
@@ -37,7 +36,7 @@ export default function Navbar() {
                             </Link>
                             <div
                                 className={`mt-1 h-0.5 bg-hitam transition-all duration-1000 ${
-                                    isActive ? "w-4/3 opacity-100" : "w-0 opacity-0"
+                                    isActive ? "w-[133%] opacity-100" : "w-0 opacity-0"
                                 }`}
                             />
                             <div
