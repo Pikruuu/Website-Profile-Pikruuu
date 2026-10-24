@@ -1,98 +1,228 @@
 import Image from "next/image";
-import Tombol from '@/components/Tombol';
-import { KartuTipeCol } from "@/components/Kartu";
 import Link from "next/link";
+import Tombol from "@/components/Tombol";
+import { KartuTipeCol } from "@/components/Kartu";
 import SumProject from "@/components/SumProject";
+import { getPortfolioData } from "@/lib/data/projects";
 
+export const dynamic = "force-dynamic";
 
-const PROJECTS = [
-    {
-        id: 1,
-        nomor: "01",
-        title: "IoT/Robotics",
-        href: "https://voxsight.id/",
-        deskripsi: "VoxSight AI adalah kacamata pintar berbasis AI untuk membantu penyandang tunanetra mengenali lingkungan sekitar secara real-time melalui suara.",
-        photo: "/images/iot01.png",
-        category: "iot/robotic",
-    },
+const INTERESTS = [
+    "Artificial Intelligence",
+    "Machine Learning",
+    "Data",
+    "IoT",
+    "Robotics",
+    "Web Development",
+    "Mobile Apps",
 ];
 
-const PUBLIKASI = [
-    {
-        id: 1,
-        nomor: "01",
-        title: "Article",
-        href: "https://share.google/hRmtIKI7AgaHt9w4C",
-        deskripsi: "Modul Implementasi Dan Sosialisasi Teknologi Kacamata Pintar Berbasis Ai Interaktif Bagi Penyandang Disabilitas Netra Di Lingkungan Slb A Yayasan Pendidikan Anak Buta Surabaya.",
-        photo: "/images/Article01.png",
-        category: "media",
-    },
-    {
-        id: 2,
-        nomor: "02",
-        title: "Article",
-        href: "https://share.google/bqT0Cl4RZZ8Cf3bNC",
-        deskripsi: "Surabaya, 6 Maret 2026 — Tim Pengabdian Masyarakat Telkom University Surabaya Kenalkan Kacamata Pintar VoxSight AI kepada Siswa Tunanetra di SLB A YPAB Surabaya",
-        photo: "/images/Article02.png",
-        category: "media",
-    },
-];
+export default async function Home() {
+    const { selected, stats } = await getPortfolioData();
 
+    return (
+        <main className="flex flex-1 flex-col">
+            <section className="relative overflow-hidden border-b border-hitam/15 lg:h-[calc(100svh-4rem)] lg:min-h-[40rem]">
+                <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0 bg-grid opacity-70 [mask-image:linear-gradient(to_bottom,black,transparent_88%)] [-webkit-mask-image:linear-gradient(to_bottom,black,transparent_88%)]"
+                />
+                <div className="relative z-10 mx-auto grid h-full max-w-[90rem] grid-cols-1 items-center gap-8 px-4 py-8 sm:grid-cols-[1.1fr_0.9fr] sm:gap-8 sm:px-8 sm:py-12 lg:grid-cols-2 lg:grid-rows-[1fr] lg:items-stretch lg:gap-16 lg:px-12 lg:py-10">
+                    <div className="flex min-w-0 animate-masuk-mulus flex-col justify-center gap-5 sm:gap-6 lg:gap-5">
+                        <div className="flex flex-wrap items-center gap-x-3 gap-y-2 font-body text-[10px] uppercase tracking-[0.18em] text-abu sm:text-[10px] lg:text-[11px]">
+                            <span className="flex items-center gap-2">
+                                <span className="h-1.5 w-1.5 animate-denyut rounded-full bg-aksen" />
+                                Available for work
+                            </span>
+                            <span className="hidden h-px w-6 bg-hitam/20 sm:block" />
+                            <span>Portfolio / 2026</span>
+                        </div>
 
-export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-center px-8 bg-putih">
-      <div className="text-5xl font-['Nulshock']">PORTOFOLIO</div>
-      <div className="flex flex-row gap-8 justify-between w-full border-b-2 px-8 border-hitam -translate-y-16 animate-masuk-mulus">
-        <div className="flex flex-col gap-8 justify-center">
-          <h1 className="text-4xl font-bold font-['Nulshock'] text-hitam">
-            HELLO, WELCOME!
-            <br />I&apos;m Fikri
-          </h1>
-          <h2 className="font-['Komika'] text-hitam">
-            I&apos;m an IT student, developer, and problem solver <br /> who enjoys researching technology and turning ideas <br />into practical solutions. My interests span AI, ML, data, IoT, and robotics.
+                        <h1 className="font-display text-[clamp(2.15rem,5.4vw,5.5rem)] font-bold leading-[0.98] tracking-tight">
+                            HELLO,
+                            <br />
+                            WELCOME!
+                            <br />
+                            <span className="text-aksen">
+                                I&apos;M
+                                <br className="lg:hidden" /> FIKRI.
+                            </span>
+                        </h1>
 
-          </h2>
-          <div className="flex flex-row gap-8">
-            <Tombol text="VIEW MY WORK" link="/project" />
-            <Tombol text="DOWNLOAD CV" />
-          </div>
-        </div>
-        <div className="grid grid-cols-1 grid-rows-1 place-items-center">
-          <div className="col-start-1 row-start-1 w-128 h-128 bg-abu rounded-full flex items-center justify-center translate-y-32 z-1 blur-3xl" />
-          <Image
-            src="/images/myPhoto.png"
-            alt="myPhoto"
-            width={512}
-            height={512}
-            className="col-start-1 row-start-1 z-2"
-            priority
-            style={{ width: 'auto', height: 'auto' }}
-          />
-        </div>
-      </div>
-      <div className="flex flex-col gap-8 justify-start w-full h-screen border-hitam py-4">
-        <div className="flex flex-row justify-between w-full">
-          <h1 className="text-xl font-['Nulshock'] text-hitam">Selected Project</h1>
-          <div className="text-xl font-['Nulshock'] text-hitam duration-600 hover:scale-110 active:scale-50">
-            <Link href="/project">View All Project...</Link>
-          </div>
-        </div>
-        <ul className="flex flex-row gap-4">
-          {[...PROJECTS, ...PUBLIKASI].slice(0, 3).map((item) => (
-            <KartuTipeCol
-              key={`${item.category}-${item.id}`}
-              photo={item.photo}
-              nomor={item.nomor}
-              title={item.title}
-              href={item.href}
-              deskripsi={item.deskripsi}
-            />
-          ))}
-        </ul>
-        <div className="h-4"/>
-        <SumProject/>
-      </div>
-    </main>
-  );
+                        <p className="max-w-md font-body text-xs leading-relaxed text-hitam/80 sm:text-sm lg:text-base">
+                            I&apos;m an IT student, developer, and problem
+                            solver who enjoys researching technology and
+                            turning ideas into practical solutions. My
+                            interests span AI, ML, data, IoT, and robotics.
+                        </p>
+
+                        <div className="flex w-full flex-col items-stretch gap-2 sm:w-auto sm:flex-row sm:items-start sm:gap-3">
+                            <Tombol
+                                text="View My Work"
+                                link="/project"
+                                className="w-full sm:w-auto"
+                            />
+                            <Tombol
+                                text="Download CV"
+                                link="/cv"
+                                bg="bg-transparent"
+                                textColor="text-hitam"
+                                className="w-full sm:w-auto"
+                            />
+                        </div>
+
+                        <div className="mt-2 flex items-center justify-between gap-4">
+                            <div className="flex items-center gap-2 font-body text-[10px] uppercase tracking-[0.2em] text-abu sm:text-[9px] sm:tracking-[0.22em]">
+                                <span className="h-6 w-px bg-hitam/20" />
+                                Surabaya, Indonesia
+                            </div>
+                            <div className="hidden items-center gap-2 lg:flex">
+                                <span className="font-body text-[9px] uppercase tracking-[0.22em] text-abu">
+                                    Scroll
+                                </span>
+                                <span className="relative block h-8 w-px overflow-hidden bg-hitam/20">
+                                    <span className="absolute inset-x-0 top-0 h-full animate-turun bg-aksen" />
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="flex w-full animate-masuk-mulus flex-col lg:mx-auto lg:h-full lg:min-h-0">
+                        <div className="flex lg:min-h-0 lg:flex-1 lg:items-center lg:justify-center">
+                            <div className="relative w-full sm:mx-auto sm:max-w-md lg:h-full lg:w-fit lg:max-w-full">
+                                <span
+                                    aria-hidden="true"
+                                    className="pointer-events-none absolute -left-1 -top-1 z-20 h-3 w-3 border-l border-t border-aksen"
+                                />
+                                <span
+                                    aria-hidden="true"
+                                    className="pointer-events-none absolute -right-1 -top-1 z-20 h-3 w-3 border-r border-t border-aksen"
+                                />
+                                <span
+                                    aria-hidden="true"
+                                    className="pointer-events-none absolute -bottom-1 -left-1 z-20 h-3 w-3 border-b border-l border-aksen"
+                                />
+                                <span
+                                    aria-hidden="true"
+                                    className="pointer-events-none absolute -bottom-1 -right-1 z-20 h-3 w-3 border-b border-r border-aksen"
+                                />
+                                <div className="relative aspect-[4/3] w-full overflow-hidden border border-hitam/20 bg-hitam/[0.04] sm:aspect-[4/5] lg:aspect-auto lg:h-full lg:w-fit lg:max-w-full">
+                                    <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between border-b border-hitam/15 bg-putih/80 px-3 py-2 font-body text-[9px] uppercase tracking-[0.18em] text-abu backdrop-blur sm:text-[9px]">
+                                        <span>Portrait</span>
+                                        <span className="text-aksen">01</span>
+                                    </div>
+                                    <Image
+                                        src="/images/myPhoto.png"
+                                        alt="Foto Muhammad Fikri Al Fathoni"
+                                        width={3806}
+                                        height={5450}
+                                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 45vw, 40vw"
+                                        className="h-full w-full object-cover object-top px-2 pb-2 pt-9 sm:object-contain sm:object-bottom sm:px-6 sm:pb-4 sm:pt-12 lg:w-auto lg:max-w-full"
+                                        priority
+                                    />
+                                </div>
+                                <div className="absolute -bottom-3 left-2 hidden items-center gap-2 border border-hitam/20 bg-putih px-2 py-1.5 sm:left-4 sm:flex sm:px-3">
+                                    <span className="h-1.5 w-1.5 rounded-full bg-aksen" />
+                                    <p className="font-body text-[8px] uppercase tracking-[0.14em] sm:text-[9px]">
+                                        Open to collaborate
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="mt-4 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 border-t border-hitam/15 pt-2 font-body text-[9px] uppercase tracking-[0.16em] text-abu sm:mt-5 sm:text-[9px]">
+                            <span>M. Fikri Al Fathoni</span>
+                            <span>Surabaya, ID</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div className="overflow-hidden border-b border-hitam/15 bg-hitam py-3.5 text-putih">
+                <p className="sr-only">
+                    Bidang yang saya tekuni: {INTERESTS.join(", ")}.
+                </p>
+                <div
+                    className="flex w-max animate-pita items-center whitespace-nowrap"
+                    aria-hidden="true"
+                >
+                    {[...INTERESTS, ...INTERESTS].map((interest, index) => (
+                        <span
+                            key={`${interest}-${index}`}
+                            className="mr-5 flex items-center gap-5 sm:mr-10 sm:gap-10"
+                        >
+                            <span className="font-display text-[10px] uppercase tracking-[0.24em] sm:text-[10px] sm:tracking-[0.28em]">
+                                {interest}
+                            </span>
+                            <span className="text-aksen-terang">✦</span>
+                        </span>
+                    ))}
+                </div>
+            </div>
+
+            <section
+                className="border-b border-hitam/15"
+                aria-label="Ringkasan portofolio"
+            >
+                <div className="mx-auto max-w-[90rem] px-4 py-10 sm:px-8 sm:py-12 lg:px-12 lg:py-16">
+                    <div className="mb-6 flex items-center gap-3 font-body text-[10px] uppercase tracking-[0.22em] text-abu">
+                        <span className="text-aksen">00</span>
+                        <span>At a glance</span>
+                        <span className="h-px flex-1 bg-hitam/15" />
+                    </div>
+                    <SumProject stats={stats} />
+                </div>
+            </section>
+
+            <section
+                className="relative mx-auto w-full max-w-[90rem] overflow-hidden px-4 py-14 sm:px-8 sm:py-16 lg:px-12 lg:py-24"
+                aria-labelledby="selected-projects"
+            >
+                <div className="relative z-10 mb-8 flex flex-col gap-4 border-b border-hitam/15 pb-5 sm:mb-10 sm:flex-row sm:items-end sm:justify-between">
+                    <div>
+                        <p className="font-body text-[10px] uppercase tracking-[0.22em] text-aksen">
+                            <span className="mr-2">✦</span>
+                            01 — Selected Work
+                        </p>
+                        <h2
+                            id="selected-projects"
+                            className="mt-3 font-display text-[clamp(1.6rem,4vw,2.25rem)] leading-tight"
+                        >
+                            Selected Project
+                        </h2>
+                    </div>
+                    <Link
+                        href="/project"
+                        className="group inline-flex w-fit items-center gap-2 border-b border-hitam/30 pb-1 font-body text-[11px] uppercase tracking-[0.16em] transition-colors duration-300 hover:border-aksen hover:text-aksen"
+                    >
+                        View all projects
+                        <span
+                            aria-hidden="true"
+                            className="transition-transform duration-300 group-hover:translate-x-1"
+                        >
+                            →
+                        </span>
+                    </Link>
+                </div>
+
+                {selected.length > 0 ? (
+                    <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+                        {selected.map((item, index) => (
+                            <KartuTipeCol
+                                key={`${item.category}-${item.id}`}
+                                photo={item.photo}
+                                nomor={String(index + 1).padStart(2, "0")}
+                                title={item.title}
+                                href={item.href}
+                                deskripsi={item.deskripsi}
+                            />
+                        ))}
+                    </ul>
+                ) : (
+                    <p className="border border-dashed border-hitam/25 px-6 py-12 text-center font-body text-[13px] leading-relaxed text-abu">
+                        Belum ada project yang dipublikasikan.
+                    </p>
+                )}
+            </section>
+        </main>
+    );
 }

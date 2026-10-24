@@ -5,6 +5,7 @@ interface TombolProps {
     link?: string;
     bg?: string;
     textColor?: string;
+    className?: string;
 }
 
 export default function Tombol({
@@ -12,11 +13,24 @@ export default function Tombol({
     link = "#",
     bg = "bg-hitam",
     textColor = "text-putih",
+    className = "",
 }: TombolProps) {
+    const isExternal = /^https?:\/\//i.test(link);
+
     return (
-        <button
-            className={`px-6 py-2 font-['Komika'] flex flex-row gap-4 rounded transition-all duration-300 hover:scale-110 active:scale-90 cursor-pointer ${bg} ${textColor}`}>
-            <Link href={link}>{text}</Link>
-        </button>
+        <Link
+            href={link}
+            target={isExternal ? "_blank" : undefined}
+            rel={isExternal ? "noopener noreferrer" : undefined}
+            className={`group inline-flex min-h-10 items-center justify-center gap-2 whitespace-nowrap border border-hitam px-4 py-2.5 font-body text-[10px] uppercase tracking-[0.16em] transition-colors duration-300 hover:border-aksen hover:bg-aksen hover:text-putih active:translate-y-px sm:px-5 sm:text-[11px] ${bg} ${textColor} ${className}`}
+        >
+            <span>{text}</span>
+            <span
+                aria-hidden="true"
+                className="transition-transform duration-300 group-hover:translate-x-1"
+            >
+                →
+            </span>
+        </Link>
     );
 }

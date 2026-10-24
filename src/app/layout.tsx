@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import SiteChrome from "@/components/SiteChrome";
 
 export const metadata: Metadata = {
-  title: "Pikruuu Portofolio",
-  description: "Website Portofolio",
+  title: "Muhammad Fikri Al Fathoni — Portofolio",
+  description:
+    "Portofolio Muhammad Fikri Al Fathoni, mahasiswa Teknologi Informasi dan developer yang berfokus pada AI, ML, data, IoT, dan robotics.",
 };
 
 export default function RootLayout({
@@ -15,10 +15,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="id">
-      <body>
-        <Navbar/>
-        <main>{children}</main>
-        <Footer/>
+      <body className="min-h-dvh antialiased">
+        <SiteChrome>{children}</SiteChrome>
       </body>
     </html>
   );

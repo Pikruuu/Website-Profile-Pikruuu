@@ -2,8 +2,10 @@
 
 :root {
   --abu: #616161;
-  --putih: #E0E0E0;
+  --putih: #e0e0e0;
   --hitam: #212121;
+  --aksen: #b33500;
+  --aksen-terang: #ff8a5c;
 }
 
 @font-face {
@@ -31,18 +33,140 @@
   }
 }
 
+@keyframes pita {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes denyut {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.8);
+  }
+}
+
+@keyframes turun {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  45% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+  55% {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+}
+
 @theme inline {
   --color-abu: var(--abu);
   --color-putih: var(--putih);
   --color-hitam: var(--hitam);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-aksen: var(--aksen);
+  --color-aksen-terang: var(--aksen-terang);
 
-  --animate-masuk-mulus: muncul 3s ease-out forwards;
+  --font-display: "Nulshock", "Komika", Arial, Helvetica, sans-serif;
+  --font-body: "Komika", Arial, Helvetica, sans-serif;
+
+  --animate-masuk-mulus: muncul 0.7s ease-out both;
+  --animate-pita: pita 34s linear infinite;
+  --animate-denyut: denyut 2.4s ease-in-out infinite;
+  --animate-turun: turun 2.8s ease-in-out infinite;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: "Nulshock", "Komika", Arial, Helvetica, sans-serif,;
+@layer utilities {
+  .bg-grid {
+    background-image:
+      linear-gradient(
+        to right,
+        rgba(33, 33, 33, 0.07) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        rgba(33, 33, 33, 0.07) 1px,
+        transparent 1px
+      );
+    background-size: 64px 64px;
+  }
+
+  .text-outline {
+    -webkit-text-stroke: 1px rgba(33, 33, 33, 0.22);
+    color: transparent;
+  }
+
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--putih);
+    color: var(--hitam);
+    font-family: "Komika", Arial, Helvetica, sans-serif;
+    overflow-x: clip;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--aksen);
+    color: var(--putih);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--aksen);
+    outline-offset: 3px;
+  }
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm;
+  }
+
+  body {
+    background: #fff;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .animate-masuk-mulus,
+  .animate-pita,
+  .animate-denyut,
+  .animate-turun {
+    animation: none;
+  }
 }
