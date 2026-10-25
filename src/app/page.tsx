@@ -27,8 +27,8 @@ export default async function Home() {
                     aria-hidden="true"
                     className="pointer-events-none absolute inset-0 bg-grid opacity-70 [mask-image:linear-gradient(to_bottom,black,transparent_88%)] [-webkit-mask-image:linear-gradient(to_bottom,black,transparent_88%)]"
                 />
-                <div className="relative z-10 mx-auto grid h-full max-w-[90rem] grid-cols-1 items-center gap-8 px-4 py-8 sm:grid-cols-[1.1fr_0.9fr] sm:gap-8 sm:px-8 sm:py-12 lg:grid-cols-2 lg:grid-rows-[1fr] lg:items-stretch lg:gap-16 lg:px-12 lg:py-10">
-                    <div className="flex min-w-0 animate-masuk-mulus flex-col justify-center gap-5 sm:gap-6 lg:gap-5">
+                <div className="relative z-10 mx-auto grid h-full max-w-[90rem] grid-cols-1 items-center gap-6 px-4 py-6 sm:grid-cols-[1.1fr_0.9fr] sm:gap-8 sm:px-8 sm:py-12 lg:grid-cols-2 lg:grid-rows-[1fr] lg:items-stretch lg:gap-16 lg:px-12 lg:py-10">
+                    <div className="flex min-w-0 animate-masuk-mulus flex-col justify-center gap-4 sm:gap-6 lg:gap-5">
                         <div className="flex flex-wrap items-center gap-x-3 gap-y-2 font-body text-[10px] uppercase tracking-[0.18em] text-abu sm:text-[10px] lg:text-[11px]">
                             <span className="flex items-center gap-2">
                                 <span className="h-1.5 w-1.5 animate-denyut rounded-full bg-aksen" />
@@ -38,25 +38,22 @@ export default async function Home() {
                             <span>Portfolio / 2026</span>
                         </div>
 
-                        <h1 className="font-display text-[clamp(2.15rem,5.4vw,5.5rem)] font-bold leading-[0.98] tracking-tight">
+                        <h1 className="font-display text-[clamp(2.3rem,5.4vw,5.5rem)] font-bold leading-[0.98] tracking-tight">
                             HELLO,
                             <br />
                             WELCOME!
                             <br />
-                            <span className="text-aksen">
-                                I&apos;M
-                                <br className="lg:hidden" /> FIKRI.
-                            </span>
+                            <span className="text-aksen">I&apos;M FIKRI.</span>
                         </h1>
 
-                        <p className="max-w-md font-body text-xs leading-relaxed text-hitam/80 sm:text-sm lg:text-base">
+                        <p className="max-w-md font-body text-[13px] leading-relaxed text-hitam/80 text-pretty sm:text-sm lg:text-base">
                             I&apos;m an IT student, developer, and problem
                             solver who enjoys researching technology and
                             turning ideas into practical solutions. My
                             interests span AI, ML, data, IoT, and robotics.
                         </p>
 
-                        <div className="flex w-full flex-col items-stretch gap-2 sm:w-auto sm:flex-row sm:items-start sm:gap-3">
+                        <div className="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:items-start sm:gap-3">
                             <Tombol
                                 text="View My Work"
                                 link="/project"
@@ -71,7 +68,7 @@ export default async function Home() {
                             />
                         </div>
 
-                        <div className="mt-2 flex items-center justify-between gap-4">
+                        <div className="mt-1 flex items-center justify-between gap-4">
                             <div className="flex items-center gap-2 font-body text-[10px] uppercase tracking-[0.2em] text-abu sm:text-[9px] sm:tracking-[0.22em]">
                                 <span className="h-6 w-px bg-hitam/20" />
                                 Surabaya, Indonesia
@@ -106,7 +103,7 @@ export default async function Home() {
                                     aria-hidden="true"
                                     className="pointer-events-none absolute -bottom-1 -right-1 z-20 h-3 w-3 border-b border-r border-aksen"
                                 />
-                                <div className="relative aspect-[4/3] w-full overflow-hidden border border-hitam/20 bg-hitam/[0.04] sm:aspect-[4/5] lg:aspect-auto lg:h-full lg:w-fit lg:max-w-full">
+                                <div className="relative aspect-[4/5] w-full overflow-hidden border border-hitam/20 bg-hitam/[0.04] lg:aspect-auto lg:h-full lg:w-fit lg:max-w-full">
                                     <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between border-b border-hitam/15 bg-putih/80 px-3 py-2 font-body text-[9px] uppercase tracking-[0.18em] text-abu backdrop-blur sm:text-[9px]">
                                         <span>Portrait</span>
                                         <span className="text-aksen">01</span>
@@ -117,11 +114,11 @@ export default async function Home() {
                                         width={3806}
                                         height={5450}
                                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 45vw, 40vw"
-                                        className="h-full w-full object-cover object-top px-2 pb-2 pt-9 sm:object-contain sm:object-bottom sm:px-6 sm:pb-4 sm:pt-12 lg:w-auto lg:max-w-full"
+                                        className="h-full w-full object-contain object-bottom px-3 pb-3 pt-10 sm:px-6 sm:pb-4 sm:pt-12 lg:w-auto lg:max-w-full"
                                         priority
                                     />
                                 </div>
-                                <div className="absolute -bottom-3 left-2 hidden items-center gap-2 border border-hitam/20 bg-putih px-2 py-1.5 sm:left-4 sm:flex sm:px-3">
+                                <div className="absolute -bottom-3 left-2 flex items-center gap-2 border border-hitam/20 bg-putih px-2 py-1.5 sm:left-4 sm:px-3">
                                     <span className="h-1.5 w-1.5 rounded-full bg-aksen" />
                                     <p className="font-body text-[8px] uppercase tracking-[0.14em] sm:text-[9px]">
                                         Open to collaborate
@@ -141,21 +138,23 @@ export default async function Home() {
                 <p className="sr-only">
                     Bidang yang saya tekuni: {INTERESTS.join(", ")}.
                 </p>
-                <div
-                    className="flex w-max animate-pita items-center whitespace-nowrap"
-                    aria-hidden="true"
-                >
-                    {[...INTERESTS, ...INTERESTS].map((interest, index) => (
-                        <span
-                            key={`${interest}-${index}`}
-                            className="mr-5 flex items-center gap-5 sm:mr-10 sm:gap-10"
-                        >
-                            <span className="font-display text-[10px] uppercase tracking-[0.24em] sm:text-[10px] sm:tracking-[0.28em]">
-                                {interest}
+                <div className="[mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)] [-webkit-mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)]">
+                    <div
+                        className="flex w-max animate-pita items-center whitespace-nowrap"
+                        aria-hidden="true"
+                    >
+                        {[...INTERESTS, ...INTERESTS].map((interest, index) => (
+                            <span
+                                key={`${interest}-${index}`}
+                                className="mr-5 flex items-center gap-5 sm:mr-10 sm:gap-10"
+                            >
+                                <span className="font-display text-[10px] uppercase tracking-[0.24em] sm:text-[10px] sm:tracking-[0.28em]">
+                                    {interest}
+                                </span>
+                                <span className="text-aksen-terang">✦</span>
                             </span>
-                            <span className="text-aksen-terang">✦</span>
-                        </span>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             </div>
 
@@ -174,10 +173,10 @@ export default async function Home() {
             </section>
 
             <section
-                className="relative mx-auto w-full max-w-[90rem] overflow-hidden px-4 py-14 sm:px-8 sm:py-16 lg:px-12 lg:py-24"
+                className="relative mx-auto w-full max-w-[90rem] overflow-hidden px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-24"
                 aria-labelledby="selected-projects"
             >
-                <div className="relative z-10 mb-8 flex flex-col gap-4 border-b border-hitam/15 pb-5 sm:mb-10 sm:flex-row sm:items-end sm:justify-between">
+                <div className="relative z-10 mb-6 flex flex-col gap-4 border-b border-hitam/15 pb-5 sm:mb-10 sm:flex-row sm:items-end sm:justify-between">
                     <div>
                         <p className="font-body text-[10px] uppercase tracking-[0.22em] text-aksen">
                             <span className="mr-2">✦</span>
@@ -205,7 +204,7 @@ export default async function Home() {
                 </div>
 
                 {selected.length > 0 ? (
-                    <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+                    <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
                         {selected.map((item, index) => (
                             <KartuTipeCol
                                 key={`${item.category}-${item.id}`}

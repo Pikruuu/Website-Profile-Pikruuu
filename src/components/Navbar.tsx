@@ -34,13 +34,13 @@ export default function Navbar() {
                         MF
                     </span>
                     <span className="min-w-0">
-                        <span className="block truncate font-display text-[9px] uppercase tracking-[0.14em] sm:hidden">
+                        <span className="block truncate font-display text-[10px] uppercase tracking-[0.12em] sm:hidden">
                             M. Fikri Al Fathoni
                         </span>
                         <span className="hidden truncate font-display text-xs uppercase tracking-[0.16em] sm:block">
                             Muhammad Fikri Al Fathoni
                         </span>
-                        <span className="mt-1 hidden font-body text-[9px] uppercase tracking-[0.24em] text-abu sm:block">
+                        <span className="mt-0.5 block font-body text-[8px] uppercase tracking-[0.2em] text-abu sm:mt-1 sm:text-[9px] sm:tracking-[0.24em]">
                             IT Student · Developer
                         </span>
                     </span>

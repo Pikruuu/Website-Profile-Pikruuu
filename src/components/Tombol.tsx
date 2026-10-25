@@ -22,7 +22,7 @@ export default function Tombol({
             href={link}
             target={isExternal ? "_blank" : undefined}
             rel={isExternal ? "noopener noreferrer" : undefined}
-            className={`group inline-flex min-h-10 items-center justify-center gap-2 whitespace-nowrap border border-hitam px-4 py-2.5 font-body text-[10px] uppercase tracking-[0.16em] transition-colors duration-300 hover:border-aksen hover:bg-aksen hover:text-putih active:translate-y-px sm:px-5 sm:text-[11px] ${bg} ${textColor} ${className}`}
+            className={`group inline-flex min-h-10 items-center justify-center gap-2 whitespace-nowrap border border-hitam px-3 py-2.5 font-body text-[10px] uppercase tracking-[0.16em] transition-colors duration-300 hover:border-aksen hover:bg-aksen hover:text-putih active:translate-y-px sm:px-5 sm:text-[11px] ${bg} ${textColor} ${className}`}
         >
             <span>{text}</span>
             <span

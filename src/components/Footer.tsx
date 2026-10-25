@@ -31,14 +31,14 @@ export default function Footer() {
         <footer className="relative overflow-hidden border-t border-hitam/15 bg-hitam text-putih">
             <div className="relative z-10 mx-auto max-w-[90rem] px-4 py-14 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
                 <div className="grid gap-10 border-b border-putih/15 pb-10 sm:gap-12 sm:pb-12 lg:grid-cols-[1.4fr_1fr] lg:gap-16">
-                    <div>
+                    <div className="min-w-0">
                         <p className="font-body text-[10px] uppercase tracking-[0.24em] text-putih/60">
                             <span className="mr-2 text-aksen-terang">↗</span>
                             Have a project in mind?
                         </p>
                         <a
                             href="mailto:alfathonimuhammadfikri@gmail.com"
-                            className="mt-5 block break-words font-display text-[clamp(1.15rem,2.4vw,2.5rem)] leading-tight transition-colors duration-300 hover:text-aksen-terang sm:mt-6"
+                            className="mt-5 block font-display text-[clamp(1.15rem,2.4vw,2.5rem)] leading-tight transition-colors duration-300 hover:text-aksen-terang sm:mt-6 [overflow-wrap:anywhere]"
                         >
                             alfathonimuhammadfikri<wbr />@gmail.com
                         </a>
