@@ -7,6 +7,7 @@ interface KartuProps {
     title: string;
     deskripsi: string;
     href: string;
+    marker?: string | null;
     radius?: string;
     border?: string;
 }
@@ -26,6 +27,7 @@ export function KartuTipeCol({
     title,
     href,
     deskripsi,
+    marker,
     radius = "rounded-none",
     border = "border",
 }: KartuProps) {
@@ -68,6 +70,11 @@ export function KartuTipeCol({
                             aria-hidden="true"
                         />
                     </div>
+                    {marker ? (
+                        <span className="w-fit border border-aksen/30 px-2 py-1 font-body text-[9px] uppercase tracking-[0.14em] text-aksen">
+                            {marker}
+                        </span>
+                    ) : null}
                     <p className="font-body text-[13px] leading-relaxed text-abu sm:text-sm [overflow-wrap:anywhere]">
                         {deskripsi}
                     </p>
@@ -83,6 +90,7 @@ export function KartuTipeRow({
     title,
     href,
     deskripsi,
+    marker,
     radius = "rounded-none",
     border = "border",
 }: KartuProps) {
@@ -111,7 +119,7 @@ export function KartuTipeRow({
                         width={320}
                         height={320}
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 40vw, 20vw"
-                        className="aspect-[16/10] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 sm:aspect-[4/3]"
+                        className="aspect-[16/10] w-full object-contain transition-transform duration-700 ease-out group-hover:scale-105 sm:aspect-[4/3]"
                     />
                 </div>
 
@@ -127,6 +135,11 @@ export function KartuTipeRow({
                             ↗
                         </span>
                     </div>
+                    {marker ? (
+                        <span className="mt-2 inline-flex w-fit border border-aksen/30 px-2 py-1 font-body text-[9px] uppercase tracking-[0.14em] text-aksen">
+                            {marker}
+                        </span>
+                    ) : null}
                     <p className="mt-2 max-w-2xl font-body text-[13px] leading-relaxed text-abu sm:text-sm [overflow-wrap:anywhere]">
                         {deskripsi}
                     </p>

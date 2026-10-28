@@ -44,6 +44,7 @@ export default function CollectionGrid({
                     title={item.title}
                     href={item.href}
                     deskripsi={item.deskripsi}
+                    marker={item.marker}
                 />
             ))}
         </ul>

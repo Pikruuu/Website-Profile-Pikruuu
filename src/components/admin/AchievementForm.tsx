@@ -3,9 +3,20 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
-import { createAchievementAction } from "@/app/admin/achievement-actions";
+import {
+    createAchievementAction,
+    updateAchievementAction,
+} from "@/app/admin/achievement-actions";
 import Toast from "@/components/admin/Toast";
-import type { AchievementActionState } from "@/types/project";
+import type {
+    AchievementActionState,
+    AchievementRow,
+} from "@/types/project";
+
+interface AchievementFormProps {
+    mode: "create" | "edit";
+    achievement?: AchievementRow;
+}
 
 const initialState: AchievementActionState = {
     status: "idle",
@@ -13,35 +24,89 @@ const initialState: AchievementActionState = {
     fieldErrors: {},
 };
 
+const MAX_CERTIFICATE_SIZE = 5 * 1024 * 1024;
+const CERTIFICATE_MIME_TYPE = "application/pdf";
+
 const fieldClass =
     "w-full border border-hitam/25 bg-putih px-3 py-2.5 font-body text-sm text-hitam outline-none transition-colors placeholder:text-abu/60 focus:border-aksen";
 const labelClass =
     "font-body text-[10px] uppercase tracking-[0.18em] text-abu";
 const hintClass = "font-body text-[10px] leading-relaxed text-abu";
+const fileClass =
+    "block w-full cursor-pointer border border-hitam/25 bg-putih px-3 py-2.5 font-body text-[11px] text-abu file:mr-3 file:cursor-pointer file:border-0 file:bg-hitam file:px-3 file:py-1.5 file:font-body file:text-[10px] file:uppercase file:tracking-[0.14em] file:text-putih hover:border-aksen";
 
-export default function AchievementCreateForm() {
+export default function AchievementForm({
+    mode,
+    achievement,
+}: AchievementFormProps) {
     const router = useRouter();
+    const action =
+        mode === "edit"
+            ? updateAchievementAction
+            : createAchievementAction;
     const [state, formAction, pending] = useActionState(
-        createAchievementAction,
+        action,
         initialState
     );
     const [dismissedState, setDismissedState] =
         useState<AchievementActionState | null>(null);
+    const [certificateFileName, setCertificateFileName] = useState<
+        string | null
+    >(null);
+    const [certificateError, setCertificateError] = useState<
+        string | null
+    >(null);
 
     const activeToast =
         state.status === "error" && state !== dismissedState
             ? { message: state.message, tone: "error" as const }
-            : null;
+            : state.status === "success" && state !== dismissedState
+              ? { message: state.message, tone: "success" as const }
+              : null;
 
     useEffect(() => {
-        if (state.status === "success") {
-            router.push("/admin");
-            router.refresh();
+        if (state.status !== "success") {
+            return;
         }
+
+        router.replace("/admin");
+        router.refresh();
     }, [state, router]);
 
     const fieldError = (name: string): string | null =>
         state.fieldErrors[name]?.[0] ?? null;
+
+    const handleCertificateChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        const file = event.target.files?.[0];
+
+        if (!file) {
+            setCertificateFileName(null);
+            setCertificateError(null);
+            return;
+        }
+
+        if (file.type !== CERTIFICATE_MIME_TYPE) {
+            setCertificateError("Sertifikat harus berformat PDF.");
+            setCertificateFileName(null);
+            event.target.value = "";
+            return;
+        }
+
+        if (file.size > MAX_CERTIFICATE_SIZE) {
+            setCertificateError("Ukuran sertifikat maksimal 5 MB.");
+            setCertificateFileName(null);
+            event.target.value = "";
+            return;
+        }
+
+        setCertificateFileName(file.name);
+        setCertificateError(null);
+    };
+
+    const certificateFieldError =
+        certificateError ?? fieldError("certificate");
 
     return (
         <div className="mx-auto w-full max-w-4xl">
@@ -54,12 +119,16 @@ export default function AchievementCreateForm() {
                         <span aria-hidden="true">←</span> Dashboard
                     </Link>
                     <h1 className="mt-3 font-display text-2xl leading-tight sm:text-3xl">
-                        Tambah Prestasi<span className="text-aksen">.</span>
+                        {mode === "edit"
+                            ? "Edit Prestasi"
+                            : "Tambah Prestasi"}
+                        <span className="text-aksen">.</span>
                     </h1>
                 </div>
                 <p className="max-w-md font-body text-[13px] leading-relaxed text-abu">
-                    Tambahkan sertifikat, judul, deskripsi, dan anggota tim.
-                    Sertifikat bisa berupa gambar atau URL PDF.
+                    {mode === "edit"
+                        ? "Perbarui detail prestasi. Sertifikat lama otomatis diganti jika kamu mengunggah berkas baru."
+                        : "Tambahkan judul, deskripsi, anggota tim, dan unggah sertifikat dalam format PDF."}
                 </p>
             </div>
 
@@ -67,12 +136,17 @@ export default function AchievementCreateForm() {
                 action={formAction}
                 className="border border-hitam/20 bg-putih p-5 sm:p-7"
             >
+                {achievement ? (
+                    <input type="hidden" name="id" value={achievement.id} />
+                ) : null}
+
                 <div className="grid gap-5 sm:grid-cols-2">
                     <label className="flex flex-col gap-2 sm:col-span-2">
                         <span className={labelClass}>Judul prestasi</span>
                         <input
                             className={fieldClass}
                             name="title"
+                            defaultValue={achievement?.title ?? ""}
                             required
                             maxLength={160}
                             autoFocus
@@ -90,6 +164,7 @@ export default function AchievementCreateForm() {
                         <textarea
                             className={`${fieldClass} min-h-24 resize-y`}
                             name="description"
+                            defaultValue={achievement?.description ?? ""}
                             maxLength={1000}
                             rows={4}
                             placeholder="Deskripsi singkat prestasi..."
@@ -108,6 +183,9 @@ export default function AchievementCreateForm() {
                         <input
                             className={fieldClass}
                             name="team_members"
+                            defaultValue={achievement?.team_members.join(
+                                ", "
+                            )}
                             maxLength={1500}
                             placeholder="Nama 1, Nama 2, Nama 3"
                         />
@@ -121,42 +199,49 @@ export default function AchievementCreateForm() {
                         ) : null}
                     </label>
 
-                    <label className="flex flex-col gap-2">
-                        <span className={labelClass}>Thumbnail</span>
+                    <div className="flex flex-col gap-3 sm:col-span-2">
+                        <span className={labelClass}>Sertifikat PDF</span>
+                        <div className="flex min-h-24 w-full flex-col justify-center gap-2 border border-hitam/20 bg-hitam/[0.04] px-4 py-5">
+                            {certificateFileName ? (
+                                <>
+                                    <p className="font-body text-[9px] uppercase tracking-[0.16em] text-abu">
+                                        File dipilih
+                                    </p>
+                                    <p className="font-body text-[12px] leading-relaxed [overflow-wrap:anywhere]">
+                                        {certificateFileName}
+                                    </p>
+                                </>
+                            ) : achievement?.certificate_url ? (
+                                <a
+                                    href={achievement.certificate_url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="w-fit border-b border-hitam/30 pb-1 font-body text-[10px] uppercase tracking-[0.16em] transition-colors hover:border-aksen hover:text-aksen"
+                                >
+                                    Lihat sertifikat saat ini ↗
+                                </a>
+                            ) : (
+                                <p className="font-body text-[11px] uppercase tracking-[0.14em] text-abu">
+                                    Belum ada sertifikat PDF
+                                </p>
+                            )}
+                        </div>
                         <input
-                            className="block w-full cursor-pointer border border-hitam/25 bg-putih px-3 py-2.5 font-body text-[11px] text-abu file:mr-3 file:cursor-pointer file:border-0 file:bg-hitam file:px-3 file:py-1.5 file:font-body file:text-[10px] file:uppercase file:tracking-[0.14em] file:text-putih hover:border-aksen"
-                            type="file"
-                            name="thumbnail"
-                            accept="image/png,image/jpeg,image/webp"
-                        />
-                        <span className={hintClass}>
-                            Foto utama prestasi. PNG, JPG, atau WebP. Maksimal
-                            2 MB.
-                        </span>
-                        {fieldError("thumbnail") ? (
-                            <span className="font-body text-[11px] text-aksen">
-                                {fieldError("thumbnail")}
-                            </span>
-                        ) : null}
-                    </label>
-
-                    <label className="flex flex-col gap-2">
-                        <span className={labelClass}>Sertifikat gambar</span>
-                        <input
-                            className="block w-full cursor-pointer border border-hitam/25 bg-putih px-3 py-2.5 font-body text-[11px] text-abu file:mr-3 file:cursor-pointer file:border-0 file:bg-hitam file:px-3 file:py-1.5 file:font-body file:text-[10px] file:uppercase file:tracking-[0.14em] file:text-putih hover:border-aksen"
+                            className={fileClass}
                             type="file"
                             name="certificate"
-                            accept="image/png,image/jpeg,image/webp"
+                            accept="application/pdf"
+                            onChange={handleCertificateChange}
                         />
                         <span className={hintClass}>
-                            PNG, JPG, atau WebP. Maksimal 2 MB.
+                            PDF. Maksimal 5 MB.
                         </span>
-                        {fieldError("certificate") ? (
+                        {certificateFieldError ? (
                             <span className="font-body text-[11px] text-aksen">
-                                {fieldError("certificate")}
+                                {certificateFieldError}
                             </span>
                         ) : null}
-                    </label>
+                    </div>
 
                     <label className="flex flex-col gap-2 sm:col-span-2">
                         <span className={labelClass}>
@@ -166,12 +251,16 @@ export default function AchievementCreateForm() {
                             className={fieldClass}
                             type="url"
                             name="certificate_url"
+                            defaultValue={
+                                achievement?.certificate_url ?? ""
+                            }
                             maxLength={500}
                             placeholder="https://..."
                         />
                         <span className={hintClass}>
-                            Untuk PDF atau tautan eksternal. Upload gambar
-                            sertifikat akan diprioritaskan.
+                            Tautan eksternal PDF. Upload sertifikat akan
+                            diprioritaskan. Kosongkan untuk menghapus
+                            sertifikat.
                         </span>
                         {fieldError("certificate_url") ? (
                             <span className="font-body text-[11px] text-aksen">
@@ -193,7 +282,11 @@ export default function AchievementCreateForm() {
                         disabled={pending}
                         className="inline-flex min-h-10 items-center justify-center gap-2 border border-hitam bg-hitam px-5 py-2.5 font-body text-[10px] uppercase tracking-[0.16em] text-putih transition-colors hover:border-aksen hover:bg-aksen disabled:cursor-not-allowed disabled:opacity-60"
                     >
-                        {pending ? "Menyimpan..." : "Tambah Prestasi"}
+                        {pending
+                            ? "Menyimpan..."
+                            : mode === "edit"
+                              ? "Simpan Perubahan"
+                              : "Tambah Prestasi"}
                         <span aria-hidden="true">→</span>
                     </button>
                 </div>

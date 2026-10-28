@@ -15,6 +15,7 @@ const emptySettings: SiteSettingsRow = {
     about_location: null,
     about_email: null,
     about_summary: null,
+    profile_image_url: null,
     updated_at: "",
 };
 
@@ -34,6 +35,7 @@ function normalizeSettings(
         about_location: settings.about_location ?? null,
         about_email: settings.about_email ?? null,
         about_summary: settings.about_summary ?? null,
+        profile_image_url: settings.profile_image_url ?? null,
         updated_at: settings.updated_at ?? "",
     };
 }

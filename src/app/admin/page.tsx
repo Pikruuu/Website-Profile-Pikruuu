@@ -3,7 +3,7 @@ import Link from "next/link";
 import AboutForm from "@/components/admin/AboutForm";
 import AchievementsList from "@/components/admin/AchievementsList";
 import DeleteProjectButton from "@/components/admin/DeleteProjectButton";
-import TechnologiesForm from "@/components/admin/TechnologiesForm";
+import ProfileImageForm from "@/components/admin/ProfileImageForm";
 import { getAboutContent } from "@/lib/about";
 import { getAdminAchievements } from "@/lib/data/achievements";
 import { getAdminProjects } from "@/lib/data/projects";
@@ -12,6 +12,7 @@ import {
     FALLBACK_PROJECT_IMAGE,
     computePortfolioStats,
     getCategoryLabel,
+    getProjectMarker,
 } from "@/lib/projects";
 
 export const dynamic = "force-dynamic";
@@ -59,7 +60,7 @@ export default async function AdminPage() {
             getAdminAchievements(),
         ]);
     const stats = computePortfolioStats(projects);
-    const technologies = settingsResult.settings.technologies.length;
+    const achievements = achievementsResult.achievements.length;
     const aboutContent = getAboutContent(settingsResult.settings);
 
     const summary = [
@@ -79,9 +80,9 @@ export default async function AdminPage() {
             detail: "Publikasi",
         },
         {
-            label: "Technologies",
-            value: String(technologies),
-            detail: "Used",
+            label: "Prestasi",
+            value: String(achievements),
+            detail: "Pencapaian",
         },
     ];
 
@@ -139,6 +140,26 @@ export default async function AdminPage() {
                     <div>
                         <p className="font-body text-[10px] uppercase tracking-[0.22em] text-aksen">
                             <span className="mr-2">✦</span>
+                            Profil
+                        </p>
+                        <h2 className="mt-2 font-display text-xl leading-tight sm:text-2xl">
+                            Foto Profil
+                        </h2>
+                    </div>
+                    <p className="max-w-md font-body text-[12px] leading-relaxed text-abu">
+                        Satu foto dipakai untuk halaman Home dan About.
+                    </p>
+                </div>
+                <ProfileImageForm
+                    imageUrl={settingsResult.settings.profile_image_url ?? null}
+                />
+            </section>
+
+            <section className="flex flex-col gap-4">
+                <div className="flex flex-wrap items-end justify-between gap-3">
+                    <div>
+                        <p className="font-body text-[10px] uppercase tracking-[0.22em] text-aksen">
+                            <span className="mr-2">✦</span>
                             About
                         </p>
                         <h2 className="mt-2 font-display text-xl leading-tight sm:text-2xl">
@@ -150,27 +171,6 @@ export default async function AdminPage() {
                     </p>
                 </div>
                 <AboutForm initial={aboutContent} />
-            </section>
-
-            <section className="flex flex-col gap-4">
-                <div className="flex flex-wrap items-end justify-between gap-3">
-                    <div>
-                        <p className="font-body text-[10px] uppercase tracking-[0.22em] text-aksen">
-                            <span className="mr-2">✦</span>
-                            Toolkit
-                        </p>
-                        <h2 className="mt-2 font-display text-xl leading-tight sm:text-2xl">
-                            Technologies Used
-                        </h2>
-                    </div>
-                    <p className="max-w-md font-body text-[12px] leading-relaxed text-abu">
-                        Tambah atau hapus item; perubahan tersimpan otomatis
-                        dan langsung tampil di halaman About.
-                    </p>
-                </div>
-                <TechnologiesForm
-                    initialTechnologies={settingsResult.settings.technologies}
-                />
             </section>
 
             <section className="flex flex-col gap-4">
@@ -230,6 +230,11 @@ export default async function AdminPage() {
                                         <span className="bg-hitam/[0.06] px-2 py-1 font-body text-[9px] uppercase tracking-[0.14em] text-abu">
                                             {getCategoryLabel(project.category)}
                                         </span>
+                                        {getProjectMarker(project.project_type) ? (
+                                            <span className="border border-aksen/30 px-2 py-1 font-body text-[9px] uppercase tracking-[0.14em] text-aksen">
+                                                {getProjectMarker(project.project_type)}
+                                            </span>
+                                        ) : null}
                                         {project.featured ? (
                                             <span className="font-body text-[9px] uppercase tracking-[0.14em] text-aksen">
                                                 ✦ Featured

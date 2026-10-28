@@ -5,7 +5,7 @@ import CvPrintButton from "@/components/CvPrintButton";
 import { getAboutContent } from "@/lib/about";
 import { getPortfolioData } from "@/lib/data/projects";
 import { getSiteSettings } from "@/lib/data/settings";
-import { getCategoryLabel } from "@/lib/projects";
+import { getCategoryLabel, sortByProjectNature } from "@/lib/projects";
 import type { CollectionItem } from "@/types/project";
 
 export const dynamic = "force-dynamic";
@@ -17,6 +17,7 @@ export const metadata: Metadata = {
 };
 
 const CONTACT = {
+    website: "https://fikri.voxsight.id/",
     github: "https://github.com/Pikruuu",
     linkedin:
         "https://linkedin.com/in/muhammad-fikri-al-fathoni-6ab0b529a",
@@ -40,9 +41,16 @@ function ProjectEntry({ item }: { item: CollectionItem }) {
                 <h3 className="text-[13px] font-semibold leading-snug text-neutral-900">
                     {item.title}
                 </h3>
-                <span className="text-[10px] uppercase tracking-[0.12em] text-neutral-500">
-                    {getCategoryLabel(item.category)}
-                </span>
+                <div className="flex flex-wrap items-center gap-2">
+                    {item.marker ? (
+                        <span className="border border-neutral-400 px-1.5 py-0.5 text-[9px] uppercase tracking-[0.12em] text-neutral-700">
+                            {item.marker}
+                        </span>
+                    ) : null}
+                    <span className="text-[10px] uppercase tracking-[0.12em] text-neutral-500">
+                        {getCategoryLabel(item.category)}
+                    </span>
+                </div>
             </div>
             <p className="mt-1 text-[12px] leading-relaxed text-neutral-600">
                 {truncate(item.deskripsi)}
@@ -52,12 +60,16 @@ function ProjectEntry({ item }: { item: CollectionItem }) {
 }
 
 export default async function CvPage() {
-    const [{ projects, publications }, settings] = await Promise.all([
-        getPortfolioData(),
-        getSiteSettings(),
-    ]);
+    const [{ projects, publications, technologies }, settings] =
+        await Promise.all([getPortfolioData(), getSiteSettings()]);
     const about = getAboutContent(settings);
-    const skills = settings.technologies;
+    const skills = technologies;
+    const realProjects = sortByProjectNature(
+        projects.filter((item) => item.projectType !== "personal")
+    );
+    const personalProjects = projects.filter(
+        (item) => item.projectType === "personal"
+    );
 
     return (
         <main className="min-h-dvh bg-neutral-100 font-sans text-neutral-900 print:bg-white">
@@ -91,6 +103,17 @@ export default async function CvPage() {
                                     className="hover:text-neutral-900"
                                 >
                                     {about.email}
+                                </a>
+                            </li>
+                            <li aria-hidden="true">•</li>
+                            <li>
+                                <a
+                                    href={CONTACT.website}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="hover:text-neutral-900"
+                                >
+                                    fikri.voxsight.id
                                 </a>
                             </li>
                             <li aria-hidden="true">•</li>
@@ -161,28 +184,13 @@ export default async function CvPage() {
                         </div>
                     </section>
 
-                    <section className="break-inside-avoid">
-                        <h2 className="border-b border-neutral-300 pb-1 text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-800">
-                            Technical Skills
-                        </h2>
-                        {skills.length > 0 ? (
-                            <p className="mt-2.5 text-[12px] leading-relaxed text-neutral-700">
-                                {skills.join(" · ")}
-                            </p>
-                        ) : (
-                            <p className="mt-2.5 text-[12px] leading-relaxed text-neutral-500">
-                                Belum ada data skill.
-                            </p>
-                        )}
-                    </section>
-
                     <section>
                         <h2 className="border-b border-neutral-300 pb-1 text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-800">
-                            Projects
+                            Projects &amp; Community Service
                         </h2>
-                        {projects.length > 0 ? (
+                        {realProjects.length > 0 ? (
                             <ul className="mt-1">
-                                {projects.map((item) => (
+                                {realProjects.map((item) => (
                                     <ProjectEntry
                                         key={item.id}
                                         item={item}
@@ -191,10 +199,26 @@ export default async function CvPage() {
                             </ul>
                         ) : (
                             <p className="mt-2.5 text-[12px] leading-relaxed text-neutral-500">
-                                Belum ada project.
+                                Belum ada project nyata.
                             </p>
                         )}
                     </section>
+
+                    {personalProjects.length > 0 ? (
+                        <section>
+                            <h2 className="border-b border-neutral-300 pb-1 text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-800">
+                                Personal / Dummy Projects
+                            </h2>
+                            <ul className="mt-1">
+                                {personalProjects.map((item) => (
+                                    <ProjectEntry
+                                        key={item.id}
+                                        item={item}
+                                    />
+                                ))}
+                            </ul>
+                        </section>
+                    ) : null}
 
                     <section>
                         <h2 className="border-b border-neutral-300 pb-1 text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-800">
@@ -218,9 +242,32 @@ export default async function CvPage() {
 
                     <section className="break-inside-avoid">
                         <h2 className="border-b border-neutral-300 pb-1 text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-800">
+                            Technical Skills
+                        </h2>
+                        {skills.length > 0 ? (
+                            <p className="mt-2.5 text-[12px] leading-relaxed text-neutral-700">
+                                {skills.join(" · ")}
+                            </p>
+                        ) : (
+                            <p className="mt-2.5 text-[12px] leading-relaxed text-neutral-500">
+                                Belum ada data skill.
+                            </p>
+                        )}
+                    </section>
+
+                    <section className="break-inside-avoid">
+                        <h2 className="border-b border-neutral-300 pb-1 text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-800">
                             Links
                         </h2>
                         <div className="mt-2.5 flex flex-wrap gap-x-5 gap-y-1 text-[11px] text-neutral-600">
+                            <a
+                                href={CONTACT.website}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="hover:text-neutral-900"
+                            >
+                                fikri.voxsight.id
+                            </a>
                             <Link
                                 href="/project"
                                 className="hover:text-neutral-900"

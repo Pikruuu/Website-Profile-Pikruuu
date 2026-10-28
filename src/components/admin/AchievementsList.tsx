@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { deleteAchievementAction } from "@/app/admin/achievement-actions";
@@ -66,11 +67,6 @@ export default function AchievementsList({
                         >
                             <div className="min-w-0">
                                 <div className="flex flex-wrap items-center gap-2 font-body text-[9px] uppercase tracking-[0.14em] text-abu">
-                                    <span className="bg-hitam/[0.06] px-2 py-1">
-                                        {achievement.certificate_url
-                                            ? "Sertifikat"
-                                            : "Tanpa sertifikat"}
-                                    </span>
                                     <span>
                                         {dateFormatter.format(
                                             new Date(achievement.created_at)
@@ -95,18 +91,13 @@ export default function AchievementsList({
                                 ) : null}
                             </div>
 
-                            <div className="flex items-center gap-2">
-                                {achievement.certificate_url ? (
-                                    <a
-                                        href={achievement.certificate_url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="inline-flex min-h-9 items-center justify-center gap-1 border border-hitam/25 px-3 py-2 font-body text-[10px] uppercase tracking-[0.14em] text-abu transition-colors hover:border-aksen hover:text-aksen"
-                                    >
-                                        Sertifikat
-                                        <span aria-hidden="true">↗</span>
-                                    </a>
-                                ) : null}
+                            <div className="flex flex-wrap items-center gap-2">
+                                <Link
+                                    href={`/admin/achievements/${achievement.id}/edit`}
+                                    className="inline-flex min-h-9 items-center justify-center border border-hitam/25 px-3 py-2 font-body text-[10px] uppercase tracking-[0.16em] transition-colors hover:border-aksen hover:bg-aksen hover:text-putih"
+                                >
+                                    Edit
+                                </Link>
                                 <button
                                     type="button"
                                     onClick={() => handleDelete(achievement)}

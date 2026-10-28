@@ -11,12 +11,8 @@ import type {
 } from "@/types/project";
 
 const BUCKET = "project-images";
-const MAX_IMAGE_SIZE = 2 * 1024 * 1024;
-const ALLOWED_IMAGE_TYPES = [
-    "image/png",
-    "image/jpeg",
-    "image/webp",
-] as const;
+const MAX_CERTIFICATE_SIZE = 5 * 1024 * 1024;
+const CERTIFICATE_MIME_TYPE = "application/pdf";
 const UUID_PATTERN =
     /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
@@ -94,45 +90,37 @@ function getFile(formData: FormData, name: string): File | null {
     return entry instanceof File && entry.size > 0 ? entry : null;
 }
 
-function validateImageFile(
-    file: File | null,
-    label: string
-): string | null {
+function validateCertificateFile(file: File | null): string | null {
     if (!file) {
         return null;
     }
 
-    if (!(ALLOWED_IMAGE_TYPES as readonly string[]).includes(file.type)) {
-        return `${label} harus berformat PNG, JPG, atau WebP.`;
+    if (file.type !== CERTIFICATE_MIME_TYPE) {
+        return "Sertifikat harus berformat PDF.";
     }
 
-    if (file.size > MAX_IMAGE_SIZE) {
-        return `Ukuran gambar ${label.toLowerCase()} maksimal 2 MB.`;
+    if (file.size > MAX_CERTIFICATE_SIZE) {
+        return "Ukuran sertifikat maksimal 5 MB.";
     }
 
     return null;
 }
 
-async function uploadImage(
+async function uploadCertificate(
     supabase: SupabaseClient,
     file: File,
-    prefix: string,
-    label: string
+    prefix: string
 ): Promise<UploadedFile> {
-    const rawExtension = file.name.split(".").pop()?.toLowerCase() ?? "png";
-    const extension = ["png", "jpg", "jpeg", "webp"].includes(rawExtension)
-        ? rawExtension
-        : "png";
-    const path = `${prefix}-${crypto.randomUUID()}.${extension}`;
+    const path = `${prefix}-${crypto.randomUUID()}.pdf`;
 
     const { error } = await supabase.storage.from(BUCKET).upload(path, file, {
-        contentType: file.type,
+        contentType: CERTIFICATE_MIME_TYPE,
         cacheControl: "31536000",
         upsert: false,
     });
 
     if (error) {
-        throw new Error(`Upload ${label} gagal: ${error.message}`);
+        throw new Error(`Upload sertifikat gagal: ${error.message}`);
     }
 
     const { data } = supabase.storage.from(BUCKET).getPublicUrl(path);
@@ -194,24 +182,9 @@ export async function createAchievementAction(
             };
         }
 
-        const thumbnailFile = getFile(formData, "thumbnail");
         const certificateFile = getFile(formData, "certificate");
-        const thumbnailError = validateImageFile(
-            thumbnailFile,
-            "Thumbnail"
-        );
-        const certificateError = validateImageFile(
-            certificateFile,
-            "Sertifikat"
-        );
-
-        if (thumbnailError) {
-            return {
-                status: "error",
-                message: thumbnailError,
-                fieldErrors: { thumbnail: [thumbnailError] },
-            };
-        }
+        const certificateError =
+            validateCertificateFile(certificateFile);
 
         if (certificateError) {
             return {
@@ -221,32 +194,17 @@ export async function createAchievementAction(
             };
         }
 
-        let uploadedThumbnail: UploadedFile | null = null;
         let uploadedCertificate: UploadedFile | null = null;
 
         try {
-            if (thumbnailFile) {
-                uploadedThumbnail = await uploadImage(
-                    supabase,
-                    thumbnailFile,
-                    "achievement-thumb",
-                    "thumbnail"
-                );
-            }
-
             if (certificateFile) {
-                uploadedCertificate = await uploadImage(
+                uploadedCertificate = await uploadCertificate(
                     supabase,
                     certificateFile,
-                    "achievement-certificate",
-                    "sertifikat"
+                    "achievement-certificate"
                 );
             }
         } catch (error) {
-            if (uploadedThumbnail) {
-                await removeImage(supabase, uploadedThumbnail.publicUrl);
-            }
-
             return {
                 status: "error",
                 message: errorMessage(error),
@@ -257,7 +215,6 @@ export async function createAchievementAction(
         const { error } = await supabase.from("achievements").insert({
             title: parsed.data.title,
             description: parsed.data.description,
-            thumbnail_url: uploadedThumbnail?.publicUrl ?? null,
             certificate_url:
                 uploadedCertificate?.publicUrl ??
                 parsed.data.certificate_url,
@@ -265,10 +222,6 @@ export async function createAchievementAction(
         });
 
         if (error) {
-            if (uploadedThumbnail) {
-                await removeImage(supabase, uploadedThumbnail.publicUrl);
-            }
-
             if (uploadedCertificate) {
                 await removeImage(
                     supabase,
@@ -288,6 +241,140 @@ export async function createAchievementAction(
         return {
             status: "success",
             message: "Prestasi berhasil ditambahkan.",
+            fieldErrors: {},
+        };
+    } catch (error) {
+        return {
+            status: "error",
+            message: errorMessage(error),
+            fieldErrors: {},
+        };
+    }
+}
+
+export async function updateAchievementAction(
+    _previousState: AchievementActionState,
+    formData: FormData
+): Promise<AchievementActionState> {
+    try {
+        const { supabase } = await requireAdminAction();
+        const id = String(formData.get("id") ?? "");
+
+        if (!UUID_PATTERN.test(id)) {
+            return {
+                status: "error",
+                message: "ID prestasi tidak valid.",
+                fieldErrors: {},
+            };
+        }
+
+        const parsed = achievementFormSchema.safeParse(
+            Object.fromEntries(formData.entries())
+        );
+
+        if (!parsed.success) {
+            return {
+                status: "error",
+                message: "Periksa kembali form.",
+                fieldErrors: fieldErrorsFromZod(parsed.error),
+            };
+        }
+
+        const certificateFile = getFile(formData, "certificate");
+        const certificateError =
+            validateCertificateFile(certificateFile);
+
+        if (certificateError) {
+            return {
+                status: "error",
+                message: certificateError,
+                fieldErrors: { certificate: [certificateError] },
+            };
+        }
+
+        const { data: existing, error: existingError } = await supabase
+            .from("achievements")
+            .select("certificate_url")
+            .eq("id", id)
+            .maybeSingle();
+
+        if (existingError) {
+            return {
+                status: "error",
+                message: existingError.message,
+                fieldErrors: {},
+            };
+        }
+
+        if (!existing) {
+            return {
+                status: "error",
+                message: "Prestasi tidak ditemukan.",
+                fieldErrors: {},
+            };
+        }
+
+        const { certificate_url: existingCertificate } =
+            existing as Pick<AchievementRow, "certificate_url">;
+
+        let uploadedCertificate: UploadedFile | null = null;
+
+        try {
+            if (certificateFile) {
+                uploadedCertificate = await uploadCertificate(
+                    supabase,
+                    certificateFile,
+                    "achievement-certificate"
+                );
+            }
+        } catch (error) {
+            return {
+                status: "error",
+                message: errorMessage(error),
+                fieldErrors: {},
+            };
+        }
+
+        const nextCertificate =
+            uploadedCertificate?.publicUrl ??
+            parsed.data.certificate_url;
+
+        const { error } = await supabase
+            .from("achievements")
+            .update({
+                title: parsed.data.title,
+                description: parsed.data.description,
+                certificate_url: nextCertificate,
+                team_members: parseTeamMembers(
+                    parsed.data.team_members
+                ),
+            })
+            .eq("id", id);
+
+        if (error) {
+            if (uploadedCertificate) {
+                await removeImage(
+                    supabase,
+                    uploadedCertificate.publicUrl
+                );
+            }
+
+            return {
+                status: "error",
+                message: error.message,
+                fieldErrors: {},
+            };
+        }
+
+        if (nextCertificate !== existingCertificate) {
+            await removeImage(supabase, existingCertificate);
+        }
+
+        revalidateAchievements();
+
+        return {
+            status: "success",
+            message: "Prestasi berhasil diperbarui.",
             fieldErrors: {},
         };
     } catch (error) {

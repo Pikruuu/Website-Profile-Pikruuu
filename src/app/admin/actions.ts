@@ -11,9 +11,11 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 import {
     CATEGORY_IDS,
     EVIDENCE_TYPE_IDS,
+    PROJECT_NATURE_IDS,
     type ProjectActionState,
     type ProjectEvidence,
     type ProjectInsert,
+    type ProjectNature,
     type ProjectRow,
     type ProjectUpdate,
     type UploadedImage,
@@ -106,6 +108,7 @@ const projectFormSchema = z
             .min(10, "Deskripsi minimal 10 karakter.")
             .max(2000, "Deskripsi maksimal 2000 karakter."),
         category: z.enum(CATEGORY_IDS),
+        project_type: z.enum(PROJECT_NATURE_IDS).optional().default("real"),
         tech_stack: z.string().max(1000).optional().default(""),
         start_date: startDateSchema,
         end_date: optionalDateSchema,
@@ -137,6 +140,7 @@ interface ParsedProject {
     slug: string;
     description: string;
     category: ProjectRow["category"];
+    project_type: ProjectNature;
     tech_stack: string[];
     start_date: string;
     end_date: string | null;
@@ -267,6 +271,7 @@ function parseProjectForm(formData: FormData): ParseResult {
             slug,
             description: parsed.data.description,
             category: parsed.data.category,
+            project_type: parsed.data.project_type,
             tech_stack: parseTechStack(parsed.data.tech_stack),
             start_date: parsed.data.start_date,
             end_date: parsed.data.end_date,
@@ -361,6 +366,8 @@ function revalidatePortfolio(slugs: string[] = []): void {
     revalidateTag(PROJECTS_CACHE_TAG, { expire: 0 });
     revalidatePath("/");
     revalidatePath("/project");
+    revalidatePath("/about");
+    revalidatePath("/cv");
     revalidatePath("/admin");
 
     new Set(slugs.filter(Boolean)).forEach((slug) => {

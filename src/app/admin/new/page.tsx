@@ -1,15 +1,16 @@
 import ProjectForm from "@/components/admin/ProjectForm";
-import { getAdminSiteSettings } from "@/lib/data/settings";
+import { getAdminProjects } from "@/lib/data/projects";
+import { collectTechnologies } from "@/lib/projects";
 
 export const dynamic = "force-dynamic";
 
 export default async function NewProjectPage() {
-    const { settings } = await getAdminSiteSettings();
+    const { projects } = await getAdminProjects();
 
     return (
         <ProjectForm
             mode="create"
-            technologies={settings.technologies}
+            technologies={collectTechnologies(projects)}
         />
     );
 }

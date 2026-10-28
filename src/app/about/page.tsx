@@ -2,47 +2,15 @@ import Image from "next/image";
 import Icon from "@/components/Icon";
 import { getAboutContent } from "@/lib/about";
 import { getAchievements } from "@/lib/data/achievements";
+import { getPortfolioData } from "@/lib/data/projects";
 import { getSiteSettings } from "@/lib/data/settings";
 import type { AchievementRow } from "@/types/project";
 
 export const dynamic = "force-dynamic";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim() ?? "";
-
-function isUploadedImage(url: string | null): boolean {
-    if (!url || !supabaseUrl) {
-        return false;
-    }
-
-    return (
-        url.startsWith(
-            `${supabaseUrl}/storage/v1/object/public/project-images/`
-        ) && /\.(png|jpe?g|webp)(\?|$)/i.test(url)
-    );
-}
-
 function AchievementCard({ achievement }: { achievement: AchievementRow }) {
-    const certificateImage = isUploadedImage(achievement.certificate_url)
-        ? achievement.certificate_url
-        : null;
-    const imageUrl = isUploadedImage(achievement.thumbnail_url)
-        ? achievement.thumbnail_url
-        : certificateImage;
-
     return (
         <li className="flex flex-col border border-hitam/15 bg-putih p-4 shadow-[8px_8px_0_-1px_rgba(33,33,33,0.04)]">
-            {imageUrl ? (
-                <div className="relative mb-4 aspect-[4/3] overflow-hidden border border-hitam/20 bg-hitam/[0.04]">
-                    <Image
-                        src={imageUrl}
-                        alt={`Thumbnail ${achievement.title}`}
-                        fill
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        className="object-cover"
-                    />
-                </div>
-            ) : null}
-
             <div className="flex items-start justify-between gap-3">
                 <h3 className="min-w-0 font-display text-lg leading-snug [overflow-wrap:anywhere]">
                     {achievement.title}
@@ -100,12 +68,15 @@ function AchievementCard({ achievement }: { achievement: AchievementRow }) {
 }
 
 export default async function About() {
-    const [settings, achievements] = await Promise.all([
+    const [settings, achievements, portfolio] = await Promise.all([
         getSiteSettings(),
         getAchievements(),
+        getPortfolioData(),
     ]);
     const about = getAboutContent(settings);
-    const { technologies } = settings;
+    const { technologies } = portfolio;
+    const aboutImage =
+        settings.profile_image_url ?? "/images/myPhoto.png";
     const details = [
         { icon: "user", label: "Name", value: about.name },
         { icon: "education", label: "Education", value: about.education },
@@ -147,7 +118,7 @@ export default async function About() {
                                     <span className="text-aksen">02</span>
                                 </div>
                                 <Image
-                                    src="/images/myPhoto.png"
+                                    src={aboutImage}
                                     alt={`Foto ${about.name}`}
                                     width={3806}
                                     height={5450}

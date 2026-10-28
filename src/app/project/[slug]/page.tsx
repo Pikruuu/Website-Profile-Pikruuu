@@ -8,6 +8,7 @@ import {
     FALLBACK_PROJECT_IMAGE,
     getCategoryLabel,
     getProjectKind,
+    getProjectMarker,
     usesTechStack,
 } from "@/lib/projects";
 
@@ -90,6 +91,7 @@ export default async function ProjectDetailPage({
     const showTechStack = usesTechStack(project.category);
     const kindLabel = isPublication ? "Publication" : "Project";
     const categoryLabel = getCategoryLabel(project.category);
+    const projectMarker = getProjectMarker(project.project_type);
     const evidenceItems = (project.evidence ?? []).map((item) => ({
         id: item.id,
         label: item.label,
@@ -124,6 +126,17 @@ export default async function ProjectDetailPage({
                                     className="h-1 w-1 rounded-full bg-aksen"
                                 />
                                 <span>{categoryLabel}</span>
+                                {projectMarker ? (
+                                    <>
+                                        <span
+                                            aria-hidden="true"
+                                            className="h-1 w-1 rounded-full bg-aksen"
+                                        />
+                                        <span className="text-aksen">
+                                            {projectMarker}
+                                        </span>
+                                    </>
+                                ) : null}
                             </div>
 
                             <h1 className="mt-4 font-display text-[clamp(2rem,5vw,4rem)] leading-[1.02] tracking-tight [overflow-wrap:anywhere]">
@@ -215,9 +228,10 @@ export default async function ProjectDetailPage({
                                     priority
                                 />
                                 <span className="absolute left-3 top-3 bg-putih/90 px-2.5 py-1 font-body text-[9px] uppercase tracking-[0.14em] text-hitam">
-                                    {project.featured
-                                        ? "✦ Featured"
-                                        : kindLabel}
+                                    {projectMarker ??
+                                        (project.featured
+                                            ? "✦ Featured"
+                                            : kindLabel)}
                                 </span>
                             </div>
                             <figcaption className="mt-2 flex flex-wrap items-center justify-between gap-2 font-body text-[9px] uppercase tracking-[0.16em] text-abu">

@@ -1,5 +1,6 @@
 import { unstable_cache } from "next/cache";
 import {
+    collectTechnologies,
     computePortfolioStats,
     isProjectCategory,
     isPublicationCategory,
@@ -50,6 +51,7 @@ export interface PortfolioData {
     publications: CollectionItem[];
     selected: CollectionItem[];
     stats: PortfolioStats;
+    technologies: string[];
 }
 
 export async function getPublicProjectBySlug(
@@ -96,6 +98,7 @@ export async function getPortfolioData(): Promise<PortfolioData> {
             .map(toCollectionItem),
         selected: sortRowsByNewest(rows).slice(0, 3).map(toCollectionItem),
         stats: computePortfolioStats(rows),
+        technologies: collectTechnologies(rows),
     };
 }
 

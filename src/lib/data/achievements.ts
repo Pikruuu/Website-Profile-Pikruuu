@@ -50,6 +50,29 @@ export interface AdminAchievementsResult {
     error: string | null;
 }
 
+export async function getAdminAchievementById(
+    id: string
+): Promise<AchievementRow | null> {
+    const supabase = await createSupabaseServerClient();
+
+    if (!supabase) {
+        return null;
+    }
+
+    const { data, error } = await supabase
+        .from("achievements")
+        .select("*")
+        .eq("id", id)
+        .maybeSingle();
+
+    if (error) {
+        console.error("Gagal memuat prestasi:", error.message);
+        return null;
+    }
+
+    return (data as AchievementRow | null) ?? null;
+}
+
 export async function getAdminAchievements(): Promise<AdminAchievementsResult> {
     const supabase = await createSupabaseServerClient();
 

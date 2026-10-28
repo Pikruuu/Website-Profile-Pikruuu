@@ -1,5 +1,6 @@
 import {
     PROJECT_CATEGORY_IDS,
+    PROJECT_NATURE_IDS,
     PUBLICATION_CATEGORY_IDS,
     type CollectionItem,
     type EvidenceType,
@@ -7,6 +8,7 @@ import {
     type PortfolioStats,
     type ProjectCategory,
     type ProjectKind,
+    type ProjectNature,
     type ProjectRow,
 } from "@/types/project";
 
@@ -48,8 +50,72 @@ export const EVIDENCE_TYPE_LABELS: Record<EvidenceType, string> = {
     other: "Lainnya",
 };
 
+export const PROJECT_NATURE_LABELS: Record<ProjectNature, string> = {
+    pengmas: "Pengmas",
+    real: "Project Nyata",
+    personal: "Dummy / Personal",
+};
+
+const PROJECT_NATURE_PRIORITY: Record<ProjectNature, number> = {
+    pengmas: 0,
+    real: 1,
+    personal: 2,
+};
+
 export function getCategoryLabel(category: ProjectCategory): string {
     return CATEGORY_LABELS[category];
+}
+
+export function getProjectNature(
+    value: ProjectNature | null | undefined
+): ProjectNature {
+    return value && (PROJECT_NATURE_IDS as readonly string[]).includes(value)
+        ? value
+        : "real";
+}
+
+export function getProjectMarker(
+    nature: ProjectNature | null | undefined
+): string | null {
+    const normalized = getProjectNature(nature);
+
+    return normalized === "real"
+        ? null
+        : PROJECT_NATURE_LABELS[normalized];
+}
+
+export function sortByProjectNature<T extends { projectType: ProjectNature }>(
+    items: readonly T[]
+): T[] {
+    return [...items].sort(
+        (a, b) =>
+            PROJECT_NATURE_PRIORITY[a.projectType] -
+            PROJECT_NATURE_PRIORITY[b.projectType]
+    );
+}
+
+export function collectTechnologies(
+    rows: readonly ProjectRow[]
+): string[] {
+    const seen = new Map<string, string>();
+
+    rows.forEach((row) => {
+        row.tech_stack.forEach((technology) => {
+            const value = technology.trim();
+
+            if (value) {
+                const key = value.toLowerCase();
+
+                if (!seen.has(key)) {
+                    seen.set(key, value);
+                }
+            }
+        });
+    });
+
+    return [...seen.values()].sort((a, b) =>
+        a.localeCompare(b, undefined, { sensitivity: "base" })
+    );
 }
 
 export function isProjectCategory(category: ProjectCategory): boolean {
@@ -88,6 +154,8 @@ export function getProjectPath(slug: string): string {
 }
 
 export function toCollectionItem(row: ProjectRow): CollectionItem {
+    const projectType = getProjectNature(row.project_type);
+
     return {
         id: row.id,
         title: row.title,
@@ -95,6 +163,8 @@ export function toCollectionItem(row: ProjectRow): CollectionItem {
         deskripsi: row.description,
         photo: row.image_url ?? FALLBACK_PROJECT_IMAGE,
         category: row.category,
+        projectType,
+        marker: getProjectMarker(projectType),
     };
 }
 

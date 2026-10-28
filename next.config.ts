@@ -32,10 +32,11 @@ const nextConfig: NextConfig = {
     allowedDevOrigins: ["localhost", "192.168.*.*", "10.*.*.*"],
     images: {
         remotePatterns: getSupabaseImagePatterns(),
+        dangerouslyAllowLocalIP: process.env.NODE_ENV !== "production",
     },
     experimental: {
         serverActions: {
-            bodySizeLimit: "3mb",
+            bodySizeLimit: "6mb",
         },
     },
 };

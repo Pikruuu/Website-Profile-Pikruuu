@@ -24,8 +24,15 @@ export const EVIDENCE_TYPE_IDS = [
     "other",
 ] as const;
 
+export const PROJECT_NATURE_IDS = [
+    "pengmas",
+    "real",
+    "personal",
+] as const;
+
 export type ProjectCategory = (typeof CATEGORY_IDS)[number];
 export type ProjectKind = "project" | "publication";
+export type ProjectNature = (typeof PROJECT_NATURE_IDS)[number];
 export type EvidenceType = (typeof EVIDENCE_TYPE_IDS)[number];
 
 export interface ProjectEvidence {
@@ -41,6 +48,7 @@ export interface ProjectRow {
     slug: string;
     description: string;
     category: ProjectCategory;
+    project_type?: ProjectNature | null;
     tech_stack: string[];
     image_url: string | null;
     demo_url: string | null;
@@ -60,6 +68,7 @@ export interface ProjectInsert {
     slug: string;
     description: string;
     category: ProjectCategory;
+    project_type?: ProjectNature;
     tech_stack?: string[];
     image_url?: string | null;
     demo_url?: string | null;
@@ -84,6 +93,7 @@ export interface SiteSettingsRow {
     about_location: string | null;
     about_email: string | null;
     about_summary: string | null;
+    profile_image_url?: string | null;
     updated_at: string;
 }
 
@@ -93,6 +103,8 @@ export interface AchievementRow {
     description: string | null;
     thumbnail_url: string | null;
     certificate_url: string | null;
+    thumbnail_position?: string | null;
+    thumbnail_zoom?: number | null;
     team_members: string[];
     created_at: string;
     updated_at: string;
@@ -105,6 +117,8 @@ export interface CollectionItem {
     deskripsi: string;
     photo: string;
     category: ProjectCategory;
+    projectType: ProjectNature;
+    marker: string | null;
 }
 
 export interface FilterTab {

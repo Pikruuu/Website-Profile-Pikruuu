@@ -4,6 +4,7 @@ import Tombol from "@/components/Tombol";
 import { KartuTipeCol } from "@/components/Kartu";
 import SumProject from "@/components/SumProject";
 import { getPortfolioData } from "@/lib/data/projects";
+import { getSiteSettings } from "@/lib/data/settings";
 
 export const dynamic = "force-dynamic";
 
@@ -18,7 +19,12 @@ const INTERESTS = [
 ];
 
 export default async function Home() {
-    const { selected, stats } = await getPortfolioData();
+    const [{ selected, stats }, settings] = await Promise.all([
+        getPortfolioData(),
+        getSiteSettings(),
+    ]);
+    const profileImage =
+        settings.profile_image_url ?? "/images/myPhoto.png";
 
     return (
         <main className="flex flex-1 flex-col">
@@ -109,7 +115,7 @@ export default async function Home() {
                                         <span className="text-aksen">01</span>
                                     </div>
                                     <Image
-                                        src="/images/myPhoto.png"
+                                        src={profileImage}
                                         alt="Foto Muhammad Fikri Al Fathoni"
                                         width={3806}
                                         height={5450}
@@ -213,6 +219,7 @@ export default async function Home() {
                                 title={item.title}
                                 href={item.href}
                                 deskripsi={item.deskripsi}
+                                marker={item.marker}
                             />
                         ))}
                     </ul>

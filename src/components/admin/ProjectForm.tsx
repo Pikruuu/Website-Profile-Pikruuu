@@ -11,15 +11,19 @@ import Toast, { type ToastTone } from "@/components/admin/Toast";
 import {
     CATEGORY_LABELS,
     EVIDENCE_TYPE_LABELS,
+    PROJECT_NATURE_LABELS,
+    getProjectNature,
     slugify,
     usesTechStack,
 } from "@/lib/projects";
 import {
     EVIDENCE_TYPE_IDS,
     PROJECT_CATEGORY_IDS,
+    PROJECT_NATURE_IDS,
     PUBLICATION_CATEGORY_IDS,
     type ProjectActionState,
     type ProjectEvidence,
+    type ProjectNature,
     type ProjectRow,
 } from "@/types/project";
 
@@ -65,11 +69,18 @@ export default function ProjectForm({
     const [category, setCategory] = useState(
         project?.category ?? "web"
     );
+    const [projectNature, setProjectNature] = useState<ProjectNature>(
+        getProjectNature(project?.project_type)
+    );
     const [evidence, setEvidence] = useState<ProjectEvidence[]>(
         project?.evidence ?? []
     );
     const [techStack, setTechStack] = useState<string[]>(
         project?.tech_stack ?? []
+    );
+    const [technologyInput, setTechnologyInput] = useState("");
+    const [technologyError, setTechnologyError] = useState<string | null>(
+        null
     );
     const [slugEdited, setSlugEdited] = useState(mode === "edit");
     const [preview, setPreview] = useState<string | null>(
@@ -102,13 +113,9 @@ export default function ProjectForm({
             return;
         }
 
-        if (mode === "edit") {
-            router.refresh();
-            return;
-        }
-
         router.replace("/admin");
-    }, [state, mode, router]);
+        router.refresh();
+    }, [state, router]);
 
     const handleImageChange = (
         event: React.ChangeEvent<HTMLInputElement>
@@ -187,17 +194,35 @@ export default function ProjectForm({
     );
 
     const addTechnology = (value: string) => {
-        if (!value || techStack.length >= 20) {
+        const technology = value.trim();
+
+        if (!technology) {
+            setTechnologyError("Nama teknologi tidak boleh kosong.");
             return;
         }
 
-        setTechStack((current) =>
-            current.some(
-                (item) => item.toLowerCase() === value.toLowerCase()
+        if (technology.length > 40) {
+            setTechnologyError("Nama teknologi maksimal 40 karakter.");
+            return;
+        }
+
+        if (techStack.length >= 20) {
+            setTechnologyError("Maksimal 20 teknologi per project.");
+            return;
+        }
+
+        if (
+            techStack.some(
+                (item) => item.toLowerCase() === technology.toLowerCase()
             )
-                ? current
-                : [...current, value]
-        );
+        ) {
+            setTechnologyError("Teknologi sudah ditambahkan.");
+            return;
+        }
+
+        setTechStack((current) => [...current, technology]);
+        setTechnologyInput("");
+        setTechnologyError(null);
     };
 
     const removeTechnology = (value: string) => {
@@ -315,6 +340,36 @@ export default function ProjectForm({
                     </label>
 
                     <label className="flex flex-col gap-2">
+                        <span className={labelClass}>Jenis Project</span>
+                        <select
+                            className={fieldClass}
+                            name="project_type"
+                            value={projectNature}
+                            onChange={(event) =>
+                                setProjectNature(
+                                    event.target.value as ProjectNature
+                                )
+                            }
+                            required
+                        >
+                            {PROJECT_NATURE_IDS.map((nature) => (
+                                <option key={nature} value={nature}>
+                                    {PROJECT_NATURE_LABELS[nature]}
+                                </option>
+                            ))}
+                        </select>
+                        <span className={hintClass}>
+                            Tandai sebagai project nyata, pengabdian
+                            masyarakat, atau dummy/personal project.
+                        </span>
+                        {firstFieldError("project_type") ? (
+                            <span className="font-body text-[11px] text-aksen">
+                                {firstFieldError("project_type")}
+                            </span>
+                        ) : null}
+                    </label>
+
+                    <label className="flex flex-col gap-2">
                         <span className={labelClass}>Tanggal Mulai</span>
                         <input
                             className={fieldClass}
@@ -373,8 +428,8 @@ export default function ProjectForm({
                                         Tech stack
                                     </span>
                                     <p className={`${hintClass} mt-1`}>
-                                        Pilih dari teknologi yang sudah kamu
-                                        kuasai.
+                                        Ketik teknologi baru atau pilih dari
+                                        yang sudah dipakai project lain.
                                     </p>
                                 </div>
                                 <span className="font-body text-[10px] uppercase tracking-[0.14em] text-abu">
@@ -413,48 +468,73 @@ export default function ProjectForm({
                                 </p>
                             )}
 
-                            <label className="flex flex-col gap-2">
-                                <span className={labelClass}>
-                                    Tambah teknologi
-                                </span>
-                                <select
-                                    className={fieldClass}
-                                    value=""
-                                    onChange={(event) =>
-                                        addTechnology(event.target.value)
-                                    }
-                                    disabled={
-                                        techStack.length >= 20 ||
-                                        availableTechnologies.length === 0
-                                    }
+                            <div className="flex flex-col gap-2">
+                                <label
+                                    htmlFor="technology-input"
+                                    className={labelClass}
                                 >
-                                    <option value="">
-                                        Pilih teknologi...
-                                    </option>
+                                    Tambah teknologi
+                                </label>
+                                <div className="flex flex-col gap-2 sm:flex-row">
+                                    <input
+                                        id="technology-input"
+                                        className={fieldClass}
+                                        value={technologyInput}
+                                        onChange={(event) => {
+                                            setTechnologyInput(
+                                                event.target.value
+                                            );
+                                            setTechnologyError(null);
+                                        }}
+                                        onKeyDown={(event) => {
+                                            if (event.key === "Enter") {
+                                                event.preventDefault();
+                                                addTechnology(
+                                                    technologyInput
+                                                );
+                                            }
+                                        }}
+                                        maxLength={40}
+                                        list="technology-suggestions"
+                                        placeholder="Ketik teknologi, mis. Next.js"
+                                        autoComplete="off"
+                                        disabled={techStack.length >= 20}
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() =>
+                                            addTechnology(technologyInput)
+                                        }
+                                        disabled={
+                                            techStack.length >= 20 ||
+                                            technologyInput.trim().length === 0
+                                        }
+                                        className="inline-flex min-h-9 shrink-0 items-center justify-center border border-hitam/25 px-3 py-2 font-body text-[10px] uppercase tracking-[0.14em] transition-colors hover:border-aksen hover:bg-aksen hover:text-putih disabled:cursor-not-allowed disabled:opacity-40"
+                                    >
+                                        Tambah
+                                    </button>
+                                </div>
+                                <datalist id="technology-suggestions">
                                     {availableTechnologies.map(
                                         (technology) => (
                                             <option
                                                 key={technology}
                                                 value={technology}
-                                            >
-                                                {technology}
-                                            </option>
+                                            />
                                         )
                                     )}
-                                </select>
-                            </label>
-
-                            {technologies.length === 0 ? (
+                                </datalist>
+                                {technologyError ? (
+                                    <span className="font-body text-[11px] text-aksen">
+                                        {technologyError}
+                                    </span>
+                                ) : null}
                                 <p className={hintClass}>
-                                    Daftar teknologi masih kosong. Tambahkan
-                                    dulu di dashboard bagian Technologies Used.
+                                    Teknologi baru otomatis tersimpan ke
+                                    project dan menjadi saran untuk project
+                                    lain.
                                 </p>
-                            ) : availableTechnologies.length === 0 &&
-                              techStack.length < 20 ? (
-                                <p className={hintClass}>
-                                    Semua teknologi sudah dipilih.
-                                </p>
-                            ) : null}
+                            </div>
 
                             <input
                                 type="hidden"

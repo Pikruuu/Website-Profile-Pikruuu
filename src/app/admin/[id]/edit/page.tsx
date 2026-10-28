@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import ProjectForm from "@/components/admin/ProjectForm";
-import { getAdminProjectById } from "@/lib/data/projects";
-import { getAdminSiteSettings } from "@/lib/data/settings";
+import { getAdminProjectById, getAdminProjects } from "@/lib/data/projects";
+import { collectTechnologies } from "@/lib/projects";
 
 export const dynamic = "force-dynamic";
 
@@ -11,9 +11,9 @@ export default async function EditProjectPage({
     params: Promise<{ id: string }>;
 }) {
     const { id } = await params;
-    const [project, settingsResult] = await Promise.all([
+    const [project, projectsResult] = await Promise.all([
         getAdminProjectById(id),
-        getAdminSiteSettings(),
+        getAdminProjects(),
     ]);
 
     if (!project) {
@@ -24,7 +24,7 @@ export default async function EditProjectPage({
         <ProjectForm
             mode="edit"
             project={project}
-            technologies={settingsResult.settings.technologies}
+            technologies={collectTechnologies(projectsResult.projects)}
         />
     );
 }
