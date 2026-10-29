@@ -60,17 +60,17 @@ export default function TechnologiesForm({
         const value = draft.trim();
 
         if (!value) {
-            setAddError("Nama teknologi tidak boleh kosong.");
+            setAddError("Technology name cannot be empty.");
             return;
         }
 
         if (value.length > MAX_LENGTH) {
-            setAddError(`Nama teknologi maksimal ${MAX_LENGTH} karakter.`);
+            setAddError(`Technology name must be at most ${MAX_LENGTH} characters.`);
             return;
         }
 
         if (technologies.length >= MAX_ITEMS) {
-            setAddError(`Maksimal ${MAX_ITEMS} teknologi.`);
+            setAddError(`Maximum of ${MAX_ITEMS} technologies.`);
             return;
         }
 
@@ -79,7 +79,7 @@ export default function TechnologiesForm({
                 (item) => item.toLowerCase() === value.toLowerCase()
             )
         ) {
-            setAddError("Teknologi tersebut sudah ada.");
+            setAddError("This technology already exists.");
             return;
         }
 
@@ -104,12 +104,12 @@ export default function TechnologiesForm({
 
     const fieldError = state.fieldErrors.technologies?.[0] ?? null;
     const statusLabel = isPending
-        ? "Menyimpan..."
+        ? "Saving..."
         : state.status === "error"
-          ? "Gagal menyimpan"
+          ? "Failed to save"
           : state.status === "success"
-            ? "Tersimpan otomatis"
-            : "Auto-save aktif";
+            ? "Saved automatically"
+            : "Auto-save active";
 
     return (
         <div className="flex flex-col gap-6">
@@ -117,16 +117,16 @@ export default function TechnologiesForm({
                 <div className="flex flex-col gap-2 border-b border-hitam/10 pb-4 sm:flex-row sm:items-end sm:justify-between">
                     <div>
                         <p className="font-body text-[10px] uppercase tracking-[0.18em] text-aksen">
-                            Teknologi
+                            Technologies
                         </p>
                         <h3 className="mt-2 font-display text-xl leading-tight">
-                            Tambah Teknologi
+                            Add Technology
                             <span className="text-aksen">.</span>
                         </h3>
                     </div>
                     <p className="max-w-md font-body text-[12px] leading-relaxed text-abu">
-                        Tambahkan tools atau bahasa yang kamu gunakan.
-                        Perubahan tersimpan otomatis.
+                        Add the tools or languages you use.
+                        Changes are saved automatically.
                     </p>
                 </div>
 
@@ -135,7 +135,7 @@ export default function TechnologiesForm({
                         htmlFor="technology-draft"
                         className="font-body text-[10px] uppercase tracking-[0.18em] text-abu"
                     >
-                        Nama teknologi
+                        Technology name
                     </label>
                     <div className="flex flex-col gap-2 sm:flex-row">
                         <input
@@ -154,7 +154,7 @@ export default function TechnologiesForm({
                                 }
                             }}
                             maxLength={MAX_LENGTH}
-                            placeholder="Mis. Next.js, Python, Figma"
+                            placeholder="e.g. Next.js, Python, Figma"
                         />
                         <button
                             type="button"
@@ -162,12 +162,12 @@ export default function TechnologiesForm({
                             disabled={isPending}
                             className="inline-flex min-h-10 shrink-0 items-center justify-center gap-2 border border-hitam bg-hitam px-5 py-2.5 font-body text-[10px] uppercase tracking-[0.16em] text-putih transition-colors hover:border-aksen hover:bg-aksen disabled:cursor-not-allowed disabled:opacity-60"
                         >
-                            {isPending ? "Menyimpan..." : "Tambah Teknologi"}
+                            {isPending ? "Saving..." : "Add Technology"}
                             <span aria-hidden="true">→</span>
                         </button>
                     </div>
                     <span className="font-body text-[10px] leading-relaxed text-abu">
-                        Maksimal 30 teknologi, masing-masing 40 karakter.
+                        Maximum of 30 technologies, 40 characters each.
                     </span>
                     {addError ? (
                         <p className="font-body text-[11px] text-aksen">
@@ -216,7 +216,7 @@ export default function TechnologiesForm({
                                     type="button"
                                     onClick={() => removeTechnology(index)}
                                     disabled={isPending}
-                                    aria-label={`Hapus ${technology}`}
+                                    aria-label={`Delete ${technology}`}
                                     className="flex h-8 w-8 shrink-0 items-center justify-center text-base leading-none text-abu transition-colors hover:text-aksen disabled:cursor-not-allowed disabled:opacity-50"
                                 >
                                     ×
@@ -227,7 +227,7 @@ export default function TechnologiesForm({
                 ) : (
                     <div className="border border-dashed border-hitam/25 px-6 py-10 text-center">
                         <p className="font-body text-[12px] leading-relaxed text-abu">
-                            Belum ada teknologi. Tambahkan lewat form di atas.
+                            No technologies yet. Add one through the form above.
                         </p>
                     </div>
                 )}

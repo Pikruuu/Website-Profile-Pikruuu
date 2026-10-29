@@ -20,7 +20,7 @@ function AchievementCard({ achievement }: { achievement: AchievementRow }) {
                         href={achievement.certificate_url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        aria-label={`Buka sertifikat ${achievement.title}`}
+                        aria-label={`Open certificate ${achievement.title}`}
                         className="shrink-0 font-body text-lg leading-none text-aksen transition-transform duration-300 hover:-translate-y-0.5 hover:translate-x-0.5"
                     >
                         ↗
@@ -37,7 +37,7 @@ function AchievementCard({ achievement }: { achievement: AchievementRow }) {
             {achievement.team_members.length > 0 ? (
                 <div className="mt-3 border-t border-hitam/10 pt-3">
                     <p className="font-body text-[9px] uppercase tracking-[0.16em] text-abu">
-                        Anggota tim
+                        Team members
                     </p>
                     <ul className="mt-2 flex flex-wrap gap-1.5">
                         {achievement.team_members.map((member) => (
@@ -59,7 +59,7 @@ function AchievementCard({ achievement }: { achievement: AchievementRow }) {
                     rel="noopener noreferrer"
                     className="mt-3 inline-flex w-fit items-center gap-1 border-b border-hitam/30 pb-1 font-body text-[10px] uppercase tracking-[0.16em] transition-colors hover:border-aksen hover:text-aksen"
                 >
-                    Lihat sertifikat
+                    View certificate
                     <span aria-hidden="true">↗</span>
                 </a>
             ) : null}
@@ -119,7 +119,7 @@ export default async function About() {
                                 </div>
                                 <Image
                                     src={aboutImage}
-                                    alt={`Foto ${about.name}`}
+                                    alt={`Photo of ${about.name}`}
                                     width={3806}
                                     height={5450}
                                     sizes="(max-width: 768px) 80vw, (max-width: 1024px) 35vw, 40vw"
@@ -216,7 +216,7 @@ export default async function About() {
                         </ul>
                     ) : (
                         <p className="border border-dashed border-hitam/25 px-6 py-12 text-center font-body text-[13px] leading-relaxed text-abu">
-                            Daftar teknologi belum diisi.
+                            The technology list has not been filled in yet.
                         </p>
                     )}
                 </div>
@@ -249,7 +249,7 @@ export default async function About() {
                         </ul>
                     ) : (
                         <p className="border border-dashed border-hitam/25 px-6 py-12 text-center font-body text-[13px] leading-relaxed text-abu">
-                            Belum ada prestasi yang ditambahkan.
+                            No achievements have been added yet.
                         </p>
                     )}
                 </div>

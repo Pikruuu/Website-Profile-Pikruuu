@@ -128,13 +128,13 @@ export default function ProjectForm({
         }
 
         if (!(ALLOWED_IMAGE_TYPES as readonly string[]).includes(file.type)) {
-            setImageError("Gambar harus berformat PNG, JPG, atau WebP.");
+            setImageError("Image must be in PNG, JPG, or WebP format.");
             event.target.value = "";
             return;
         }
 
         if (file.size > MAX_IMAGE_SIZE) {
-            setImageError("Ukuran gambar maksimal 2 MB.");
+            setImageError("Image size must be at most 2 MB.");
             event.target.value = "";
             return;
         }
@@ -197,17 +197,17 @@ export default function ProjectForm({
         const technology = value.trim();
 
         if (!technology) {
-            setTechnologyError("Nama teknologi tidak boleh kosong.");
+            setTechnologyError("Technology name cannot be empty.");
             return;
         }
 
         if (technology.length > 40) {
-            setTechnologyError("Nama teknologi maksimal 40 karakter.");
+            setTechnologyError("Technology name must be at most 40 characters.");
             return;
         }
 
         if (techStack.length >= 20) {
-            setTechnologyError("Maksimal 20 teknologi per project.");
+            setTechnologyError("Maximum of 20 technologies per project.");
             return;
         }
 
@@ -216,7 +216,7 @@ export default function ProjectForm({
                 (item) => item.toLowerCase() === technology.toLowerCase()
             )
         ) {
-            setTechnologyError("Teknologi sudah ditambahkan.");
+            setTechnologyError("Technology already added.");
             return;
         }
 
@@ -242,14 +242,14 @@ export default function ProjectForm({
                         <span aria-hidden="true">←</span> Dashboard
                     </Link>
                     <h1 className="mt-3 font-display text-2xl leading-tight sm:text-3xl">
-                        {mode === "edit" ? "Edit Project" : "Tambah Project"}
+                        {mode === "edit" ? "Edit Project" : "Add Project"}
                         <span className="text-aksen">.</span>
                     </h1>
                 </div>
                 <p className="max-w-md font-body text-[13px] leading-relaxed text-abu">
                     {mode === "edit"
-                        ? "Perbarui detail project. Gambar lama otomatis diganti jika kamu mengunggah gambar baru."
-                        : "Isi detail project baru. Gambar bersifat opsional dan bisa ditambahkan nanti."}
+                        ? "Update the project details. The old image is automatically replaced if you upload a new one."
+                        : "Fill in the new project details. The image is optional and can be added later."}
                 </p>
             </div>
 
@@ -263,7 +263,7 @@ export default function ProjectForm({
 
                 <div className="grid gap-5 sm:grid-cols-2">
                     <label className="flex flex-col gap-2 sm:col-span-2">
-                        <span className={labelClass}>Judul</span>
+                        <span className={labelClass}>Title</span>
                         <input
                             className={fieldClass}
                             name="title"
@@ -271,7 +271,7 @@ export default function ProjectForm({
                             onChange={(event) => setTitle(event.target.value)}
                             required
                             maxLength={140}
-                            placeholder="Nama project"
+                            placeholder="Project name"
                         />
                         {firstFieldError("title") ? (
                             <span className="font-body text-[11px] text-aksen">
@@ -291,11 +291,11 @@ export default function ProjectForm({
                                 setSlug(event.target.value);
                             }}
                             maxLength={140}
-                            placeholder="nama-project"
+                            placeholder="project-name"
                         />
                         <span className={hintClass}>
-                            Otomatis dari judul, tetapi bisa diedit. Gunakan
-                            huruf kecil, angka, dan tanda hubung.
+                            Generated automatically from the title, but can be edited. Use
+                            lowercase letters, numbers, and hyphens.
                         </span>
                         {firstFieldError("slug") ? (
                             <span className="font-body text-[11px] text-aksen">
@@ -305,7 +305,7 @@ export default function ProjectForm({
                     </label>
 
                     <label className="flex flex-col gap-2">
-                        <span className={labelClass}>Kategori</span>
+                        <span className={labelClass}>Category</span>
                         <select
                             className={fieldClass}
                             name="category"
@@ -324,7 +324,7 @@ export default function ProjectForm({
                                     </option>
                                 ))}
                             </optgroup>
-                            <optgroup label="Publikasi">
+                            <optgroup label="Publications">
                                 {PUBLICATION_CATEGORY_IDS.map((category) => (
                                     <option key={category} value={category}>
                                         {CATEGORY_LABELS[category]}
@@ -340,7 +340,7 @@ export default function ProjectForm({
                     </label>
 
                     <label className="flex flex-col gap-2">
-                        <span className={labelClass}>Jenis Project</span>
+                        <span className={labelClass}>Project Type</span>
                         <select
                             className={fieldClass}
                             name="project_type"
@@ -359,8 +359,8 @@ export default function ProjectForm({
                             ))}
                         </select>
                         <span className={hintClass}>
-                            Tandai sebagai project nyata, pengabdian
-                            masyarakat, atau dummy/personal project.
+                            Mark as a real project, community service,
+                            or dummy/personal project.
                         </span>
                         {firstFieldError("project_type") ? (
                             <span className="font-body text-[11px] text-aksen">
@@ -370,7 +370,7 @@ export default function ProjectForm({
                     </label>
 
                     <label className="flex flex-col gap-2">
-                        <span className={labelClass}>Tanggal Mulai</span>
+                        <span className={labelClass}>Start Date</span>
                         <input
                             className={fieldClass}
                             type="date"
@@ -386,7 +386,7 @@ export default function ProjectForm({
                     </label>
 
                     <label className="flex flex-col gap-2">
-                        <span className={labelClass}>Tanggal Selesai</span>
+                        <span className={labelClass}>End Date</span>
                         <input
                             className={fieldClass}
                             type="date"
@@ -394,7 +394,7 @@ export default function ProjectForm({
                             defaultValue={project?.end_date ?? ""}
                         />
                         <span className={hintClass}>
-                            Kosongkan jika project masih berjalan.
+                            Leave empty if the project is still ongoing.
                         </span>
                         {firstFieldError("end_date") ? (
                             <span className="font-body text-[11px] text-aksen">
@@ -415,7 +415,7 @@ export default function ProjectForm({
                                 Featured
                             </span>
                             <span className="mt-1 block font-body text-[11px] text-abu">
-                                Tandai sebagai project unggulan.
+                                Mark as a featured project.
                             </span>
                         </span>
                     </label>
@@ -428,8 +428,8 @@ export default function ProjectForm({
                                         Tech stack
                                     </span>
                                     <p className={`${hintClass} mt-1`}>
-                                        Ketik teknologi baru atau pilih dari
-                                        yang sudah dipakai project lain.
+                                        Type a new technology or pick from
+                                        ones already used by other projects.
                                     </p>
                                 </div>
                                 <span className="font-body text-[10px] uppercase tracking-[0.14em] text-abu">
@@ -454,7 +454,7 @@ export default function ProjectForm({
                                                         technology
                                                     )
                                                 }
-                                                aria-label={`Hapus ${technology}`}
+                                                aria-label={`Delete ${technology}`}
                                                 className="flex h-4 w-4 items-center justify-center text-sm leading-none text-abu transition-colors hover:text-aksen"
                                             >
                                                 ×
@@ -464,7 +464,7 @@ export default function ProjectForm({
                                 </ul>
                             ) : (
                                 <p className="border border-dashed border-hitam/25 px-4 py-5 text-center font-body text-[11px] leading-relaxed text-abu">
-                                    Belum ada teknologi dipilih.
+                                    No technologies selected yet.
                                 </p>
                             )}
 
@@ -473,7 +473,7 @@ export default function ProjectForm({
                                     htmlFor="technology-input"
                                     className={labelClass}
                                 >
-                                    Tambah teknologi
+                                    Add technology
                                 </label>
                                 <div className="flex flex-col gap-2 sm:flex-row">
                                     <input
@@ -496,7 +496,7 @@ export default function ProjectForm({
                                         }}
                                         maxLength={40}
                                         list="technology-suggestions"
-                                        placeholder="Ketik teknologi, mis. Next.js"
+                                        placeholder="Type a technology, e.g. Next.js"
                                         autoComplete="off"
                                         disabled={techStack.length >= 20}
                                     />
@@ -511,7 +511,7 @@ export default function ProjectForm({
                                         }
                                         className="inline-flex min-h-9 shrink-0 items-center justify-center border border-hitam/25 px-3 py-2 font-body text-[10px] uppercase tracking-[0.14em] transition-colors hover:border-aksen hover:bg-aksen hover:text-putih disabled:cursor-not-allowed disabled:opacity-40"
                                     >
-                                        Tambah
+                                        Add
                                     </button>
                                 </div>
                                 <datalist id="technology-suggestions">
@@ -530,9 +530,9 @@ export default function ProjectForm({
                                     </span>
                                 ) : null}
                                 <p className={hintClass}>
-                                    Teknologi baru otomatis tersimpan ke
-                                    project dan menjadi saran untuk project
-                                    lain.
+                                    New technologies are automatically saved to the
+                                    project and become suggestions for other
+                                    projects.
                                 </p>
                             </div>
 
@@ -551,7 +551,7 @@ export default function ProjectForm({
                     ) : null}
 
                     <label className="flex flex-col gap-2 sm:col-span-2">
-                        <span className={labelClass}>Deskripsi</span>
+                        <span className={labelClass}>Description</span>
                         <textarea
                             className={`${fieldClass} min-h-28 resize-y`}
                             name="description"
@@ -559,7 +559,7 @@ export default function ProjectForm({
                             required
                             maxLength={2000}
                             rows={5}
-                            placeholder="Ceritakan project ini secara singkat."
+                            placeholder="Tell the story of this project briefly."
                         />
                         {firstFieldError("description") ? (
                             <span className="font-body text-[11px] text-aksen">
@@ -570,7 +570,7 @@ export default function ProjectForm({
 
                     <label className="flex flex-col gap-2 sm:col-span-2">
                         <span className={labelClass}>
-                            Kontribusi Tim / Partner
+                            Team / Partner Contribution
                         </span>
                         <textarea
                             className={`${fieldClass} min-h-24 resize-y`}
@@ -578,7 +578,7 @@ export default function ProjectForm({
                             defaultValue={project?.team_contribution ?? ""}
                             maxLength={1000}
                             rows={3}
-                            placeholder="Contoh: Tim pengabdian masyarakat Telkom University — riset AI dan integrasi perangkat."
+                            placeholder="Example: Telkom University community service team — AI research and device integration."
                         />
                         {firstFieldError("team_contribution") ? (
                             <span className="font-body text-[11px] text-aksen">
@@ -592,9 +592,9 @@ export default function ProjectForm({
                             <div>
                                 <span className={labelClass}>Evidence</span>
                                 <p className={`${hintClass} mt-1 max-w-xl`}>
-                                    Dokumentasi, sertifikat, laporan, atau
-                                    tautan pendukung lainnya. Bisa tambah
-                                    sebanyak yang dibutuhkan.
+                                    Documentation, certificates, reports, or
+                                    other supporting links. Add as many as
+                                    needed.
                                 </p>
                             </div>
                             <button
@@ -602,7 +602,7 @@ export default function ProjectForm({
                                 onClick={addEvidence}
                                 className="inline-flex min-h-9 shrink-0 items-center justify-center border border-hitam/25 px-3 py-2 font-body text-[10px] uppercase tracking-[0.14em] transition-colors hover:border-aksen hover:bg-aksen hover:text-putih"
                             >
-                                + Tambah Evidence
+                                + Add Evidence
                             </button>
                         </div>
 
@@ -614,7 +614,7 @@ export default function ProjectForm({
 
                         {evidence.length === 0 ? (
                             <p className="border border-dashed border-hitam/25 px-4 py-6 text-center font-body text-[11px] leading-relaxed text-abu">
-                                Belum ada evidence.
+                                No evidence yet.
                             </p>
                         ) : (
                             <ul className="flex flex-col gap-3">
@@ -638,14 +638,14 @@ export default function ProjectForm({
                                                 }
                                                 className="font-body text-[9px] uppercase tracking-[0.16em] text-aksen transition-colors hover:text-hitam"
                                             >
-                                                Hapus
+                                                Delete
                                             </button>
                                         </div>
 
                                         <div className="mt-3 grid gap-3 sm:grid-cols-[minmax(0,1fr)_11rem]">
                                             <label className="flex flex-col gap-2">
                                                 <span className={labelClass}>
-                                                    Judul
+                                                    Title
                                                 </span>
                                                 <input
                                                     className={fieldClass}
@@ -662,12 +662,12 @@ export default function ProjectForm({
                                                     }
                                                     maxLength={120}
                                                     required
-                                                    placeholder="Sertifikat, laporan, dokumentasi..."
+                                                    placeholder="Certificate, report, documentation..."
                                                 />
                                             </label>
                                             <label className="flex flex-col gap-2">
                                                 <span className={labelClass}>
-                                                    Tipe
+                                                    Type
                                                 </span>
                                                 <select
                                                     className={fieldClass}
@@ -733,12 +733,12 @@ export default function ProjectForm({
                     </div>
 
                     <div className="flex flex-col gap-3 sm:col-span-2">
-                        <span className={labelClass}>Gambar</span>
+                        <span className={labelClass}>Image</span>
                         <div className="relative aspect-[16/10] w-full overflow-hidden border border-hitam/20 bg-hitam/[0.04]">
                             {preview ? (
                                 <div
                                     role="img"
-                                    aria-label="Preview gambar project"
+                                    aria-label="Project image preview"
                                     className="h-full w-full bg-cover bg-center"
                                     style={{
                                         backgroundImage: `url("${preview}")`,
@@ -746,7 +746,7 @@ export default function ProjectForm({
                                 />
                             ) : (
                                 <div className="flex h-full items-center justify-center px-4 text-center font-body text-[11px] uppercase tracking-[0.14em] text-abu">
-                                    Belum ada gambar
+                                    No image yet
                                 </div>
                             )}
                         </div>
@@ -758,7 +758,7 @@ export default function ProjectForm({
                             onChange={handleImageChange}
                         />
                         <span className={hintClass}>
-                            PNG, JPG, atau WebP. Maksimal 2 MB.
+                            PNG, JPG, or WebP. Maximum 2 MB.
                         </span>
                         {imageFieldError ? (
                             <span className="font-body text-[11px] text-aksen">
@@ -773,7 +773,7 @@ export default function ProjectForm({
                         href="/admin"
                         className="inline-flex min-h-10 items-center justify-center border border-hitam/25 px-4 py-2.5 font-body text-[10px] uppercase tracking-[0.16em] transition-colors hover:border-aksen"
                     >
-                        Batal
+                        Cancel
                     </Link>
                     <button
                         type="submit"
@@ -781,10 +781,10 @@ export default function ProjectForm({
                         className="inline-flex min-h-10 items-center justify-center gap-2 border border-hitam bg-hitam px-5 py-2.5 font-body text-[10px] uppercase tracking-[0.16em] text-putih transition-colors hover:border-aksen hover:bg-aksen disabled:cursor-not-allowed disabled:opacity-60"
                     >
                         {pending
-                            ? "Menyimpan..."
+                            ? "Saving..."
                             : mode === "edit"
-                              ? "Simpan Perubahan"
-                              : "Tambah Project"}
+                              ? "Save Changes"
+                              : "Add Project"}
                         <span aria-hidden="true">→</span>
                     </button>
                 </div>

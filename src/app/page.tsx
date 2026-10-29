@@ -116,7 +116,7 @@ export default async function Home() {
                                     </div>
                                     <Image
                                         src={profileImage}
-                                        alt="Foto Muhammad Fikri Al Fathoni"
+                                        alt="Photo of Muhammad Fikri Al Fathoni"
                                         width={3806}
                                         height={5450}
                                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 45vw, 40vw"
@@ -142,7 +142,7 @@ export default async function Home() {
 
             <div className="overflow-hidden border-b border-hitam/15 bg-hitam py-3.5 text-putih">
                 <p className="sr-only">
-                    Bidang yang saya tekuni: {INTERESTS.join(", ")}.
+                    Fields I work in: {INTERESTS.join(", ")}.
                 </p>
                 <div className="[mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)] [-webkit-mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)]">
                     <div
@@ -166,7 +166,7 @@ export default async function Home() {
 
             <section
                 className="border-b border-hitam/15"
-                aria-label="Ringkasan portofolio"
+                aria-label="Portfolio summary"
             >
                 <div className="mx-auto max-w-[90rem] px-4 py-10 sm:px-8 sm:py-12 lg:px-12 lg:py-16">
                     <div className="mb-6 flex items-center gap-3 font-body text-[10px] uppercase tracking-[0.22em] text-abu">
@@ -225,7 +225,7 @@ export default async function Home() {
                     </ul>
                 ) : (
                     <p className="border border-dashed border-hitam/25 px-6 py-12 text-center font-body text-[13px] leading-relaxed text-abu">
-                        Belum ada project yang dipublikasikan.
+                        No projects have been published yet.
                     </p>
                 )}
             </section>

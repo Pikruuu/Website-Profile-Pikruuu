@@ -139,7 +139,7 @@ export default function ImageCropper({
             </div>
 
             <p className="font-body text-[10px] leading-relaxed text-abu">
-                Geser gambar untuk mengatur posisi crop.
+                Drag the image to adjust the crop position.
             </p>
 
             <div className="grid gap-2">
@@ -165,7 +165,7 @@ export default function ImageCropper({
                 </label>
 
                 <label className="flex items-center gap-3">
-                    <span className={labelClass}>Vertikal</span>
+                    <span className={labelClass}>Vertical</span>
                     <input
                         type="range"
                         min={0}
@@ -210,7 +210,7 @@ export default function ImageCropper({
                 disabled={!src}
                 className="inline-flex min-h-9 w-fit items-center justify-center border border-hitam/25 px-3 py-2 font-body text-[10px] uppercase tracking-[0.14em] transition-colors hover:border-aksen hover:text-aksen disabled:cursor-not-allowed disabled:opacity-50"
             >
-                Reset posisi
+                Reset position
             </button>
         </div>
     );

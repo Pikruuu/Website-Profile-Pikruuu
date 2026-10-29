@@ -25,7 +25,7 @@ export const TABS_PROJECT: readonly FilterTab[] = [
 export const TABS_PUBLIKASI: readonly FilterTab[] = [
     { id: "all", label: "All" },
     { id: "jurnal", label: "Journal" },
-    { id: "hki", label: "Property" },
+    { id: "hki", label: "Intellectual Property" },
     { id: "git", label: "GitHub" },
     { id: "media", label: "Media" },
 ];
@@ -38,21 +38,21 @@ export const CATEGORY_LABELS: Record<ProjectCategory, string> = {
     "iot/robotic": "IoT/Robotic",
     data: "Data / ML",
     jurnal: "Journal",
-    hki: "Property",
+    hki: "Intellectual Property",
     git: "GitHub",
     media: "Media",
 };
 
 export const EVIDENCE_TYPE_LABELS: Record<EvidenceType, string> = {
-    documentation: "Dokumentasi",
-    certificate: "Sertifikat",
-    report: "Laporan",
-    other: "Lainnya",
+    documentation: "Documentation",
+    certificate: "Certificate",
+    report: "Report",
+    other: "Other",
 };
 
 export const PROJECT_NATURE_LABELS: Record<ProjectNature, string> = {
-    pengmas: "Pengmas",
-    real: "Project Nyata",
+    pengmas: "Community Service",
+    real: "Real Project",
     personal: "Dummy / Personal",
 };
 

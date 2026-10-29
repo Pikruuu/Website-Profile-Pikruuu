@@ -43,7 +43,7 @@ export default async function AdminLayout({
                             rel="noopener noreferrer"
                             className="inline-flex min-h-9 items-center justify-center gap-1 border border-hitam/25 px-3 py-2 font-body text-[10px] uppercase tracking-[0.14em] text-abu transition-colors hover:border-aksen hover:text-aksen"
                         >
-                            Lihat situs <span aria-hidden="true">↗</span>
+                            View site <span aria-hidden="true">↗</span>
                         </Link>
                         <LogoutButton />
                     </nav>

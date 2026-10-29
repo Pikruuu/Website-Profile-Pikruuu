@@ -17,7 +17,7 @@ import {
 
 export const dynamic = "force-dynamic";
 
-const dateFormatter = new Intl.DateTimeFormat("id-ID", {
+const dateFormatter = new Intl.DateTimeFormat("en-US", {
     day: "2-digit",
     month: "short",
     year: "numeric",
@@ -38,15 +38,15 @@ function formatPeriod(start: string | null, end: string | null): string {
     const endLabel = formatDateOnly(end);
 
     if (!startLabel && !endLabel) {
-        return "Tanggal belum diisi";
+        return "Date not set";
     }
 
     if (startLabel && !endLabel) {
-        return `${startLabel} — Sekarang`;
+        return `${startLabel} — Present`;
     }
 
     if (!startLabel && endLabel) {
-        return `Selesai ${endLabel}`;
+        return `Completed ${endLabel}`;
     }
 
     return `${startLabel} — ${endLabel}`;
@@ -67,22 +67,22 @@ export default async function AdminPage() {
         {
             label: "Total",
             value: String(projects.length),
-            detail: "Project & publikasi",
+            detail: "Projects & publications",
         },
         {
             label: "Projects",
             value: String(stats.projects),
-            detail: "Karya",
+            detail: "Works",
         },
         {
             label: "Publications",
             value: String(stats.publications),
-            detail: "Publikasi",
+            detail: "Publications",
         },
         {
-            label: "Prestasi",
+            label: "Achievements",
             value: String(achievements),
-            detail: "Pencapaian",
+            detail: "Accomplishments",
         },
     ];
 
@@ -98,9 +98,9 @@ export default async function AdminPage() {
                         Projects<span className="text-aksen">.</span>
                     </h1>
                     <p className="mt-3 max-w-xl font-body text-[13px] leading-relaxed text-abu">
-                        Kelola project dan publikasi yang tampil di halaman
-                        publik. Perubahan langsung divalidasi dan disimpan ke
-                        Supabase.
+                        Manage the projects and publications shown on the
+                        public pages. Changes are validated and saved to
+                        Supabase immediately.
                     </p>
                 </div>
             </header>
@@ -140,14 +140,14 @@ export default async function AdminPage() {
                     <div>
                         <p className="font-body text-[10px] uppercase tracking-[0.22em] text-aksen">
                             <span className="mr-2">✦</span>
-                            Profil
+                            Profile
                         </p>
                         <h2 className="mt-2 font-display text-xl leading-tight sm:text-2xl">
-                            Foto Profil
+                            Profile Photo
                         </h2>
                     </div>
                     <p className="max-w-md font-body text-[12px] leading-relaxed text-abu">
-                        Satu foto dipakai untuk halaman Home dan About.
+                        A single photo is used for the Home and About pages.
                     </p>
                 </div>
                 <ProfileImageForm
@@ -167,7 +167,7 @@ export default async function AdminPage() {
                         </h2>
                     </div>
                     <p className="max-w-md font-body text-[12px] leading-relaxed text-abu">
-                        Edit informasi utama yang tampil di halaman About.
+                        Edit the main information shown on the About page.
                     </p>
                 </div>
                 <AboutForm initial={aboutContent} />
@@ -176,7 +176,7 @@ export default async function AdminPage() {
             <section className="flex flex-col gap-4">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                     <h2 className="font-display text-xl leading-tight sm:text-2xl">
-                        Daftar Project
+                        Project List
                     </h2>
                     <div className="flex flex-wrap items-center gap-3">
                         <span className="font-body text-[10px] uppercase tracking-[0.16em] text-abu">
@@ -186,7 +186,7 @@ export default async function AdminPage() {
                             href="/admin/new"
                             className="inline-flex min-h-9 items-center justify-center gap-2 border border-hitam bg-hitam px-4 py-2 font-body text-[10px] uppercase tracking-[0.16em] text-putih transition-colors hover:border-aksen hover:bg-aksen"
                         >
-                            Tambah Project <span aria-hidden="true">→</span>
+                            Add Project <span aria-hidden="true">→</span>
                         </Link>
                     </div>
                 </div>
@@ -194,14 +194,14 @@ export default async function AdminPage() {
                 {projects.length === 0 ? (
                     <div className="flex flex-col items-center gap-4 border border-dashed border-hitam/25 px-6 py-14 text-center">
                         <p className="max-w-md font-body text-[13px] leading-relaxed text-abu">
-                            Belum ada project. Tambahkan project pertama untuk
-                            menampilkannya di halaman publik.
+                            No projects yet. Add your first project to
+                            display it on the public pages.
                         </p>
                         <Link
                             href="/admin/new"
                             className="inline-flex min-h-10 items-center justify-center border border-hitam px-5 py-2.5 font-body text-[10px] uppercase tracking-[0.16em] transition-colors hover:border-aksen hover:bg-aksen hover:text-putih"
                         >
-                            Tambah Project
+                            Add Project
                         </Link>
                     </div>
                 ) : (
@@ -256,13 +256,13 @@ export default async function AdminPage() {
                                     {project.team_contribution ? (
                                         <p className="mt-1 line-clamp-1 font-body text-[11px] leading-relaxed text-abu">
                                             <span className="text-hitam">
-                                                Tim/partner:
+                                                Team/partner:
                                             </span>{" "}
                                             {project.team_contribution}
                                         </p>
                                     ) : null}
                                     <p className="mt-2 font-body text-[9px] uppercase tracking-[0.16em] text-abu">
-                                        Diperbarui {formatDate(project.updated_at)}
+                                        Updated {formatDate(project.updated_at)}
                                     </p>
                                 </div>
 
@@ -289,10 +289,10 @@ export default async function AdminPage() {
                     <div>
                         <p className="font-body text-[10px] uppercase tracking-[0.22em] text-aksen">
                             <span className="mr-2">✦</span>
-                            Pencapaian
+                            Achievements
                         </p>
                         <h2 className="mt-2 font-display text-xl leading-tight sm:text-2xl">
-                            Prestasi
+                            Achievements
                         </h2>
                     </div>
                     <div className="flex flex-wrap items-center gap-3">
@@ -303,7 +303,7 @@ export default async function AdminPage() {
                             href="/admin/achievements/new"
                             className="inline-flex min-h-9 items-center justify-center gap-2 border border-hitam bg-hitam px-4 py-2 font-body text-[10px] uppercase tracking-[0.16em] text-putih transition-colors hover:border-aksen hover:bg-aksen"
                         >
-                            Tambah Prestasi{" "}
+                            Add Achievement{" "}
                             <span aria-hidden="true">→</span>
                         </Link>
                     </div>

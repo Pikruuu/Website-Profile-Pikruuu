@@ -19,33 +19,33 @@ const aboutSchema = z.object({
     name: z
         .string()
         .trim()
-        .min(2, "Nama minimal 2 karakter.")
-        .max(120, "Nama maksimal 120 karakter."),
+        .min(2, "Name must be at least 2 characters.")
+        .max(120, "Name must be at most 120 characters."),
     nickname: z
         .string()
         .trim()
-        .min(1, "Nama panggilan wajib diisi.")
-        .max(80, "Nama panggilan maksimal 80 karakter."),
+        .min(1, "Nickname is required.")
+        .max(80, "Nickname must be at most 80 characters."),
     education: z
         .string()
         .trim()
-        .min(2, "Pendidikan minimal 2 karakter.")
-        .max(200, "Pendidikan maksimal 200 karakter."),
+        .min(2, "Education must be at least 2 characters.")
+        .max(200, "Education must be at most 200 characters."),
     location: z
         .string()
         .trim()
-        .min(2, "Lokasi minimal 2 karakter.")
-        .max(120, "Lokasi maksimal 120 karakter."),
+        .min(2, "Location must be at least 2 characters.")
+        .max(120, "Location must be at most 120 characters."),
     email: z
         .string()
         .trim()
-        .email("Format email tidak valid.")
-        .max(160, "Email maksimal 160 karakter."),
+        .email("Invalid email format.")
+        .max(160, "Email must be at most 160 characters."),
     summary: z
         .string()
         .trim()
-        .min(10, "Ringkasan minimal 10 karakter.")
-        .max(1500, "Ringkasan maksimal 1500 karakter."),
+        .min(10, "Summary must be at least 10 characters.")
+        .max(1500, "Summary must be at most 1500 characters."),
 });
 
 const listSchema = z
@@ -53,10 +53,10 @@ const listSchema = z
         z
             .string()
             .trim()
-            .min(1, "Nama teknologi tidak boleh kosong.")
-            .max(40, "Nama teknologi maksimal 40 karakter.")
+            .min(1, "Technology name cannot be empty.")
+            .max(40, "Technology name must be at most 40 characters.")
     )
-    .max(30, "Maksimal 30 teknologi.");
+    .max(30, "Maximum of 30 technologies.");
 
 function normalizeTechnologies(values: string[]): string[] {
     const seen = new Set<string>();
@@ -78,7 +78,7 @@ function normalizeTechnologies(values: string[]): string[] {
 function errorMessage(error: unknown): string {
     return error instanceof Error
         ? error.message
-        : "Terjadi kesalahan. Silakan coba lagi.";
+        : "An error occurred. Please try again.";
 }
 
 function getFile(formData: FormData, name: string): File | null {
@@ -93,11 +93,11 @@ function validateImageFile(file: File | null, label: string): string | null {
     }
 
     if (!(ALLOWED_IMAGE_TYPES as readonly string[]).includes(file.type)) {
-        return `${label} harus berformat PNG, JPG, atau WebP.`;
+        return `${label} must be in PNG, JPG, or WebP format.`;
     }
 
     if (file.size > MAX_IMAGE_SIZE) {
-        return `Ukuran ${label.toLowerCase()} maksimal 2 MB.`;
+        return `${label.toLowerCase()} size must be at most 2 MB.`;
     }
 
     return null;
@@ -126,7 +126,7 @@ async function uploadImage(
     });
 
     if (error) {
-        throw new Error(`Upload gambar gagal: ${error.message}`);
+        throw new Error(`Failed to upload image: ${error.message}`);
     }
 
     const { data } = supabase.storage.from(BUCKET).getPublicUrl(path);
@@ -187,7 +187,7 @@ export async function updateAboutAction(
 
             return {
                 status: "error",
-                message: "Periksa kembali form.",
+                message: "Please check the form again.",
                 fieldErrors: result,
             };
         }
@@ -219,7 +219,7 @@ export async function updateAboutAction(
 
         return {
             status: "success",
-            message: "About berhasil diperbarui.",
+            message: "About updated successfully.",
             fieldErrors: {},
         };
     } catch (error) {
@@ -238,7 +238,7 @@ export async function updateProfileImageAction(
     try {
         const { supabase } = await requireAdminAction();
         const profileFile = getFile(formData, "profile_image");
-        const profileError = validateImageFile(profileFile, "Foto profil");
+        const profileError = validateImageFile(profileFile, "Profile photo");
 
         if (profileError) {
             return {
@@ -251,7 +251,7 @@ export async function updateProfileImageAction(
         if (!profileFile) {
             return {
                 status: "error",
-                message: "Pilih foto profil terlebih dahulu.",
+                message: "Please select a profile photo first.",
                 fieldErrors: {},
             };
         }
@@ -319,7 +319,7 @@ export async function updateProfileImageAction(
 
         return {
             status: "success",
-            message: "Foto profil berhasil diperbarui.",
+            message: "Profile photo updated successfully.",
             fieldErrors: {},
         };
     } catch (error) {
@@ -343,7 +343,7 @@ export async function updateTechnologiesAction(
         if (!list.success) {
             const message =
                 list.error.issues[0]?.message ??
-                "Daftar teknologi tidak valid.";
+                "Invalid technology list.";
 
             return {
                 status: "error",
@@ -374,7 +374,7 @@ export async function updateTechnologiesAction(
 
         return {
             status: "success",
-            message: "Perubahan tersimpan otomatis.",
+            message: "Changes saved automatically.",
             fieldErrors: {},
         };
     } catch (error) {

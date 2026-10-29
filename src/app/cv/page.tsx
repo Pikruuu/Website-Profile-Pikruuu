@@ -25,7 +25,7 @@ const CONTACT = {
 
 const EDUCATION = {
     school: "Telkom University",
-    program: "S1 Teknologi Informasi",
+    program: "Bachelor of Information Technology",
     period: "Semester 5",
     location: "Surabaya, Indonesia",
 };
@@ -199,7 +199,7 @@ export default async function CvPage() {
                             </ul>
                         ) : (
                             <p className="mt-2.5 text-[12px] leading-relaxed text-neutral-500">
-                                Belum ada project nyata.
+                                No real projects yet.
                             </p>
                         )}
                     </section>
@@ -235,7 +235,7 @@ export default async function CvPage() {
                             </ul>
                         ) : (
                             <p className="mt-2.5 text-[12px] leading-relaxed text-neutral-500">
-                                Belum ada publikasi.
+                                No publications yet.
                             </p>
                         )}
                     </section>
@@ -250,7 +250,7 @@ export default async function CvPage() {
                             </p>
                         ) : (
                             <p className="mt-2.5 text-[12px] leading-relaxed text-neutral-500">
-                                Belum ada data skill.
+                                No skill data yet.
                             </p>
                         )}
                     </section>
@@ -268,12 +268,6 @@ export default async function CvPage() {
                             >
                                 fikri.voxsight.id
                             </a>
-                            <Link
-                                href="/project"
-                                className="hover:text-neutral-900"
-                            >
-                                Portfolio projects
-                            </Link>
                             <a
                                 href={CONTACT.github}
                                 target="_blank"

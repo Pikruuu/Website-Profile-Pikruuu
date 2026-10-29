@@ -76,13 +76,13 @@ export default function AboutForm({
                     </h3>
                 </div>
                 <p className="max-w-md font-body text-[12px] leading-relaxed text-abu">
-                    Ubah informasi utama yang tampil di halaman About.
+                    Change the main information shown on the About page.
                 </p>
             </div>
 
             <div className="mt-5 grid gap-5 sm:grid-cols-2">
                 <label className="flex flex-col gap-2">
-                    <span className={labelClass}>Nama lengkap</span>
+                    <span className={labelClass}>Full name</span>
                     <input
                         className={fieldClass}
                         name="name"
@@ -101,7 +101,7 @@ export default function AboutForm({
                 </label>
 
                 <label className="flex flex-col gap-2">
-                    <span className={labelClass}>Nama panggilan</span>
+                    <span className={labelClass}>Nickname</span>
                     <input
                         className={fieldClass}
                         name="nickname"
@@ -113,7 +113,7 @@ export default function AboutForm({
                         required
                     />
                     <span className={hintClass}>
-                        Dipakai untuk heading besar di halaman About.
+                        Used for the large heading on the About page.
                     </span>
                     {fieldError("nickname") ? (
                         <span className="font-body text-[11px] text-aksen">
@@ -123,7 +123,7 @@ export default function AboutForm({
                 </label>
 
                 <label className="flex flex-col gap-2">
-                    <span className={labelClass}>Pendidikan</span>
+                    <span className={labelClass}>Education</span>
                     <input
                         className={fieldClass}
                         name="education"
@@ -142,7 +142,7 @@ export default function AboutForm({
                 </label>
 
                 <label className="flex flex-col gap-2">
-                    <span className={labelClass}>Lokasi</span>
+                    <span className={labelClass}>Location</span>
                     <input
                         className={fieldClass}
                         name="location"
@@ -181,7 +181,7 @@ export default function AboutForm({
                 </label>
 
                 <label className="flex flex-col gap-2 sm:col-span-2">
-                    <span className={labelClass}>Ringkasan</span>
+                    <span className={labelClass}>Summary</span>
                     <textarea
                         className={`${fieldClass} min-h-28 resize-y`}
                         name="summary"
@@ -207,7 +207,7 @@ export default function AboutForm({
                         disabled={pending}
                         className="inline-flex min-h-10 items-center justify-center gap-2 border border-hitam bg-hitam px-5 py-2.5 font-body text-[10px] uppercase tracking-[0.16em] text-putih transition-colors hover:border-aksen hover:bg-aksen disabled:cursor-not-allowed disabled:opacity-60"
                     >
-                        {pending ? "Menyimpan..." : "Simpan About"}
+                        {pending ? "Saving..." : "Save About"}
                         <span aria-hidden="true">→</span>
                     </button>
                 </div>

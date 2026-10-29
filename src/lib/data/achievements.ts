@@ -18,7 +18,7 @@ async function fetchPublicAchievements(): Promise<AchievementRow[]> {
         .order("created_at", { ascending: false });
 
     if (error) {
-        throw new Error(`Gagal memuat prestasi: ${error.message}`);
+        throw new Error(`Failed to load achievements: ${error.message}`);
     }
 
     return (data ?? []) as AchievementRow[];
@@ -38,7 +38,7 @@ export async function getAchievements(): Promise<AchievementRow[]> {
         return await getCachedAchievements();
     } catch (error) {
         console.error(
-            error instanceof Error ? error.message : "Gagal memuat prestasi."
+            error instanceof Error ? error.message : "Failed to load achievements."
         );
 
         return [];
@@ -66,7 +66,7 @@ export async function getAdminAchievementById(
         .maybeSingle();
 
     if (error) {
-        console.error("Gagal memuat prestasi:", error.message);
+        console.error("Failed to load achievement:", error.message);
         return null;
     }
 
@@ -79,7 +79,7 @@ export async function getAdminAchievements(): Promise<AdminAchievementsResult> {
     if (!supabase) {
         return {
             achievements: [],
-            error: "Supabase belum dikonfigurasi. Isi .env.local terlebih dahulu.",
+            error: "Supabase is not configured yet. Fill in .env.local first.",
         };
     }
 

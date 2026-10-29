@@ -43,15 +43,15 @@ export default function Footer() {
                             alfathonimuhammadfikri<wbr />@gmail.com
                         </a>
                         <p className="mt-5 max-w-md font-body text-[13px] leading-relaxed text-putih/70 sm:mt-6 sm:text-sm">
-                            Membangun solusi IoT, AI/ML, dan aplikasi mobile
-                            dengan pendekatan yang rapi dan fungsional.
+                            Building IoT, AI/ML, and mobile app solutions
+                            with a clean and functional approach.
                         </p>
                     </div>
 
                     <div className="grid grid-cols-2 gap-6 sm:gap-8">
                         <div>
                             <h3 className="font-body text-[10px] uppercase tracking-[0.22em] text-putih/50">
-                                Navigasi
+                                Navigation
                             </h3>
                             <ul className="mt-4 flex flex-col gap-1">
                                 {NAV_ITEMS.map((item) => (
@@ -114,7 +114,7 @@ export default function Footer() {
                         >
                             ©
                         </Link>{" "}
-                        {year} Muhammad Fikri Al Fathoni
+                        {year} Muhammad Fikri Al Fathoni. All rights reserved.
                     </p>
                     <p>Built with Next.js &amp; Tailwind CSS</p>
                 </div>

@@ -24,19 +24,19 @@ const certificateUrlSchema = z
     .transform((value) => (value && value.length > 0 ? value : null))
     .refine(
         (value) => value === null || /^https?:\/\/\S+$/i.test(value),
-        "URL sertifikat harus diawali http:// atau https://."
+        "Certificate URL must start with http:// or https://."
     );
 
 const achievementFormSchema = z.object({
     title: z
         .string()
         .trim()
-        .min(2, "Judul prestasi minimal 2 karakter.")
-        .max(160, "Judul prestasi maksimal 160 karakter."),
+        .min(2, "Achievement title must be at least 2 characters.")
+        .max(160, "Achievement title must be at most 160 characters."),
     description: z
         .string()
         .trim()
-        .max(1000, "Deskripsi maksimal 1000 karakter.")
+        .max(1000, "Description must be at most 1000 characters.")
         .optional()
         .transform((value) => (value && value.length > 0 ? value : null)),
     certificate_url: certificateUrlSchema,
@@ -51,7 +51,7 @@ interface UploadedFile {
 function errorMessage(error: unknown): string {
     return error instanceof Error
         ? error.message
-        : "Terjadi kesalahan. Silakan coba lagi.";
+        : "An error occurred. Please try again.";
 }
 
 function fieldErrorsFromZod(error: z.ZodError): Record<string, string[]> {
@@ -96,11 +96,11 @@ function validateCertificateFile(file: File | null): string | null {
     }
 
     if (file.type !== CERTIFICATE_MIME_TYPE) {
-        return "Sertifikat harus berformat PDF.";
+        return "Certificate must be in PDF format.";
     }
 
     if (file.size > MAX_CERTIFICATE_SIZE) {
-        return "Ukuran sertifikat maksimal 5 MB.";
+        return "Certificate size must be at most 5 MB.";
     }
 
     return null;
@@ -120,7 +120,7 @@ async function uploadCertificate(
     });
 
     if (error) {
-        throw new Error(`Upload sertifikat gagal: ${error.message}`);
+        throw new Error(`Failed to upload certificate: ${error.message}`);
     }
 
     const { data } = supabase.storage.from(BUCKET).getPublicUrl(path);
@@ -177,7 +177,7 @@ export async function createAchievementAction(
         if (!parsed.success) {
             return {
                 status: "error",
-                message: "Periksa kembali form.",
+                message: "Please check the form again.",
                 fieldErrors: fieldErrorsFromZod(parsed.error),
             };
         }
@@ -240,7 +240,7 @@ export async function createAchievementAction(
 
         return {
             status: "success",
-            message: "Prestasi berhasil ditambahkan.",
+            message: "Achievement added successfully.",
             fieldErrors: {},
         };
     } catch (error) {
@@ -263,7 +263,7 @@ export async function updateAchievementAction(
         if (!UUID_PATTERN.test(id)) {
             return {
                 status: "error",
-                message: "ID prestasi tidak valid.",
+                message: "Invalid achievement ID.",
                 fieldErrors: {},
             };
         }
@@ -275,7 +275,7 @@ export async function updateAchievementAction(
         if (!parsed.success) {
             return {
                 status: "error",
-                message: "Periksa kembali form.",
+                message: "Please check the form again.",
                 fieldErrors: fieldErrorsFromZod(parsed.error),
             };
         }
@@ -309,7 +309,7 @@ export async function updateAchievementAction(
         if (!existing) {
             return {
                 status: "error",
-                message: "Prestasi tidak ditemukan.",
+                message: "Achievement not found.",
                 fieldErrors: {},
             };
         }
@@ -374,7 +374,7 @@ export async function updateAchievementAction(
 
         return {
             status: "success",
-            message: "Prestasi berhasil diperbarui.",
+            message: "Achievement updated successfully.",
             fieldErrors: {},
         };
     } catch (error) {
@@ -395,7 +395,7 @@ export async function deleteAchievementAction(
         if (!UUID_PATTERN.test(id)) {
             return {
                 status: "error",
-                message: "ID prestasi tidak valid.",
+                message: "Invalid achievement ID.",
                 fieldErrors: {},
             };
         }
@@ -417,7 +417,7 @@ export async function deleteAchievementAction(
         if (!existing) {
             return {
                 status: "error",
-                message: "Prestasi tidak ditemukan.",
+                message: "Achievement not found.",
                 fieldErrors: {},
             };
         }
@@ -447,7 +447,7 @@ export async function deleteAchievementAction(
 
         return {
             status: "success",
-            message: "Prestasi berhasil dihapus.",
+            message: "Achievement deleted successfully.",
             fieldErrors: {},
         };
     } catch (error) {

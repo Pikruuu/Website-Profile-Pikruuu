@@ -78,13 +78,13 @@ export default function ProfileImageForm({
         }
 
         if (!(ALLOWED_IMAGE_TYPES as readonly string[]).includes(file.type)) {
-            setError("Foto harus berformat PNG, JPG, atau WebP.");
+            setError("Photo must be in PNG, JPG, or WebP format.");
             event.target.value = "";
             return;
         }
 
         if (file.size > MAX_IMAGE_SIZE) {
-            setError("Ukuran foto maksimal 2 MB.");
+            setError("Photo size must be at most 2 MB.");
             event.target.value = "";
             return;
         }
@@ -110,7 +110,7 @@ export default function ProfileImageForm({
                     <div className="relative aspect-[4/5] w-full overflow-hidden border border-hitam/20 bg-hitam/[0.04]">
                         <div
                             role="img"
-                            aria-label="Preview foto profil"
+                            aria-label="Profile photo preview"
                             className="h-full w-full bg-cover bg-top"
                             style={{
                                 backgroundImage: `url("${preview}")`,
@@ -120,7 +120,7 @@ export default function ProfileImageForm({
 
                     <div className="flex flex-col gap-3">
                         <p className="font-body text-[12px] leading-relaxed text-abu">
-                            Satu foto ini dipakai di halaman Home dan About.
+                            This single photo is used on the Home and About pages.
                         </p>
                         <input
                             className={fileClass}
@@ -130,7 +130,7 @@ export default function ProfileImageForm({
                             onChange={handleChange}
                         />
                         <span className={hintClass}>
-                            PNG, JPG, atau WebP. Maksimal 2 MB.
+                            PNG, JPG, or WebP. Maximum 2 MB.
                         </span>
                         {imageError ? (
                             <span className="font-body text-[11px] text-aksen">
@@ -146,7 +146,7 @@ export default function ProfileImageForm({
                         disabled={pending}
                         className="inline-flex min-h-10 items-center justify-center gap-2 border border-hitam bg-hitam px-5 py-2.5 font-body text-[10px] uppercase tracking-[0.16em] text-putih transition-colors hover:border-aksen hover:bg-aksen disabled:cursor-not-allowed disabled:opacity-60"
                     >
-                        {pending ? "Menyimpan..." : "Simpan Foto"}
+                        {pending ? "Saving..." : "Save Photo"}
                         <span aria-hidden="true">→</span>
                     </button>
                 </div>

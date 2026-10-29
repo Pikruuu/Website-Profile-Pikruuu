@@ -23,7 +23,7 @@ export default function Navbar() {
             />
             <nav
                 className="mx-auto flex max-w-[90rem] items-center justify-between gap-3 px-4 py-3 sm:gap-4 sm:px-8 lg:px-12"
-                aria-label="Navigasi utama"
+                aria-label="Main navigation"
             >
                 <Link
                     href="/"
@@ -49,7 +49,7 @@ export default function Navbar() {
                 <button
                     type="button"
                     className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-hitam/25 transition-colors hover:border-aksen hover:text-aksen sm:h-10 sm:w-10 lg:hidden"
-                    aria-label={menuOpen ? "Tutup menu" : "Buka menu"}
+                    aria-label={menuOpen ? "Close menu" : "Open menu"}
                     aria-controls="main-navigation"
                     aria-expanded={menuOpen}
                     onClick={() => setMenuOpen((open) => !open)}

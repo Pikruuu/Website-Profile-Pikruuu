@@ -48,10 +48,10 @@ const startDateSchema = z
     .trim()
     .optional()
     .transform((value) => value ?? "")
-    .refine((value) => value.length > 0, "Tanggal mulai wajib diisi.")
+    .refine((value) => value.length > 0, "Start date is required.")
     .refine(
         (value) => DATE_ONLY_PATTERN.test(value) && isValidDateOnly(value),
-        "Tanggal mulai tidak valid."
+        "Invalid start date."
     );
 
 const optionalDateSchema = z
@@ -63,7 +63,7 @@ const optionalDateSchema = z
         (value) =>
             value === null ||
             (DATE_ONLY_PATTERN.test(value) && isValidDateOnly(value)),
-        "Tanggal selesai tidak valid."
+        "Invalid end date."
     );
 
 const evidenceItemSchema = z.object({
@@ -77,8 +77,8 @@ const evidenceItemSchema = z.object({
     label: z
         .string()
         .trim()
-        .min(1, "Judul evidence wajib diisi.")
-        .max(120, "Judul evidence maksimal 120 karakter."),
+        .min(1, "Evidence title is required.")
+        .max(120, "Evidence title must be at most 120 characters."),
     type: z.enum(EVIDENCE_TYPE_IDS),
     url: z
         .string()
@@ -86,27 +86,27 @@ const evidenceItemSchema = z.object({
         .max(500)
         .refine(
             (value) => /^https?:\/\/\S+$/i.test(value),
-            "URL evidence harus diawali http:// atau https://."
+            "Evidence URL must start with http:// or https://."
         ),
 });
 
 const evidenceListSchema = z
     .array(evidenceItemSchema)
-    .max(50, "Maksimal 50 evidence per project.");
+    .max(50, "Maximum of 50 evidence items per project.");
 
 const projectFormSchema = z
     .object({
         title: z
             .string()
             .trim()
-            .min(2, "Judul minimal 2 karakter.")
-            .max(140, "Judul maksimal 140 karakter."),
+            .min(2, "Title must be at least 2 characters.")
+            .max(140, "Title must be at most 140 characters."),
         slug: z.string().trim().max(140).optional().default(""),
         description: z
             .string()
             .trim()
-            .min(10, "Deskripsi minimal 10 karakter.")
-            .max(2000, "Deskripsi maksimal 2000 karakter."),
+            .min(10, "Description must be at least 10 characters.")
+            .max(2000, "Description must be at most 2000 characters."),
         category: z.enum(CATEGORY_IDS),
         project_type: z.enum(PROJECT_NATURE_IDS).optional().default("real"),
         tech_stack: z.string().max(1000).optional().default(""),
@@ -115,7 +115,7 @@ const projectFormSchema = z
         team_contribution: z
             .string()
             .trim()
-            .max(1000, "Kontribusi maksimal 1000 karakter.")
+            .max(1000, "Contribution must be at most 1000 characters.")
             .optional()
             .transform((value) => (value && value.length > 0 ? value : null)),
         evidence: z.string().max(60000).optional().default("[]"),
@@ -131,7 +131,7 @@ const projectFormSchema = z
             data.end_date >= data.start_date,
         {
             path: ["end_date"],
-            message: "Tanggal selesai tidak boleh sebelum tanggal mulai.",
+            message: "End date cannot be before start date.",
         }
     );
 
@@ -156,7 +156,7 @@ type ParseResult =
 function errorMessage(error: unknown): string {
     return error instanceof Error
         ? error.message
-        : "Terjadi kesalahan. Silakan coba lagi.";
+        : "An error occurred. Please try again.";
 }
 
 function fieldErrorsFromZod(error: z.ZodError): Record<string, string[]> {
@@ -199,7 +199,7 @@ function parseProjectForm(formData: FormData): ParseResult {
             ok: false,
             state: {
                 status: "error",
-                message: "Periksa kembali form.",
+                message: "Please check the form again.",
                 fieldErrors: fieldErrorsFromZod(parsed.error),
             },
         };
@@ -212,10 +212,10 @@ function parseProjectForm(formData: FormData): ParseResult {
             ok: false,
             state: {
                 status: "error",
-                message: "Slug tidak valid.",
+                message: "Invalid slug.",
                 fieldErrors: {
                     slug: [
-                        "Slug hanya boleh berisi huruf kecil, angka, dan tanda hubung.",
+                        "Slug may only contain lowercase letters, numbers, and hyphens.",
                     ],
                 },
             },
@@ -234,11 +234,11 @@ function parseProjectForm(formData: FormData): ParseResult {
                 ok: false,
                 state: {
                     status: "error",
-                    message: "Periksa kembali evidence.",
+                    message: "Please check the evidence again.",
                     fieldErrors: {
                         evidence: [
                             evidenceParsed.error.issues[0]?.message ??
-                                "Evidence tidak valid.",
+                                "Invalid evidence.",
                         ],
                     },
                 },
@@ -256,9 +256,9 @@ function parseProjectForm(formData: FormData): ParseResult {
             ok: false,
             state: {
                 status: "error",
-                message: "Format evidence tidak valid.",
+                message: "Invalid evidence format.",
                 fieldErrors: {
-                    evidence: ["Format evidence tidak valid."],
+                    evidence: ["Invalid evidence format."],
                 },
             },
         };
@@ -296,11 +296,11 @@ function validateImageFile(file: File | null): string | null {
     if (
         !(ALLOWED_IMAGE_TYPES as readonly string[]).includes(file.type)
     ) {
-        return "Gambar harus berformat PNG, JPG, atau WebP.";
+        return "Image must be in PNG, JPG, or WebP format.";
     }
 
     if (file.size > MAX_IMAGE_SIZE) {
-        return "Ukuran gambar maksimal 2 MB.";
+        return "Image size must be at most 2 MB.";
     }
 
     return null;
@@ -324,7 +324,7 @@ async function uploadImage(
     });
 
     if (error) {
-        throw new Error(`Upload gambar gagal: ${error.message}`);
+        throw new Error(`Failed to upload image: ${error.message}`);
     }
 
     const { data } = supabase.storage.from(BUCKET).getPublicUrl(path);
@@ -378,8 +378,8 @@ function revalidatePortfolio(slugs: string[] = []): void {
 function uniqueSlugError(): ProjectActionState {
     return {
         status: "error",
-        message: "Slug sudah dipakai project lain.",
-        fieldErrors: { slug: ["Slug sudah dipakai project lain."] },
+        message: "Slug is already used by another project.",
+        fieldErrors: { slug: ["Slug is already used by another project."] },
     };
 }
 
@@ -443,7 +443,7 @@ export async function createProjectAction(
 
         return {
             status: "success",
-            message: "Project berhasil ditambahkan.",
+            message: "Project added successfully.",
             fieldErrors: {},
         };
     } catch (error) {
@@ -466,7 +466,7 @@ export async function updateProjectAction(
         if (!UUID_PATTERN.test(id)) {
             return {
                 status: "error",
-                message: "ID project tidak valid.",
+                message: "Invalid project ID.",
                 fieldErrors: {},
             };
         }
@@ -505,7 +505,7 @@ export async function updateProjectAction(
         if (!existing) {
             return {
                 status: "error",
-                message: "Project tidak ditemukan.",
+                message: "Project not found.",
                 fieldErrors: {},
             };
         }
@@ -556,7 +556,7 @@ export async function updateProjectAction(
 
         return {
             status: "success",
-            message: "Project berhasil diperbarui.",
+            message: "Project updated successfully.",
             fieldErrors: {},
         };
     } catch (error) {
@@ -577,7 +577,7 @@ export async function deleteProjectAction(
         if (!UUID_PATTERN.test(id)) {
             return {
                 status: "error",
-                message: "ID project tidak valid.",
+                message: "Invalid project ID.",
                 fieldErrors: {},
             };
         }
@@ -599,7 +599,7 @@ export async function deleteProjectAction(
         if (!existing) {
             return {
                 status: "error",
-                message: "Project tidak ditemukan.",
+                message: "Project not found.",
                 fieldErrors: {},
             };
         }
@@ -625,7 +625,7 @@ export async function deleteProjectAction(
 
         return {
             status: "success",
-            message: "Project berhasil dihapus.",
+            message: "Project deleted successfully.",
             fieldErrors: {},
         };
     } catch (error) {

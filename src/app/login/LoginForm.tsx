@@ -35,7 +35,7 @@ export default function LoginForm() {
                     name="email"
                     autoComplete="email"
                     required
-                    placeholder="nama@email.com"
+                    placeholder="name@email.com"
                 />
             </label>
 
@@ -58,7 +58,7 @@ export default function LoginForm() {
                 disabled={pending}
                 className="mt-2 inline-flex min-h-11 items-center justify-center gap-2 border border-hitam bg-hitam px-5 py-3 font-body text-[11px] uppercase tracking-[0.16em] text-putih transition-colors duration-300 hover:border-aksen hover:bg-aksen disabled:cursor-not-allowed disabled:opacity-60"
             >
-                {pending ? "Memproses..." : "Masuk"}
+                {pending ? "Processing..." : "Sign In"}
                 <span aria-hidden="true">→</span>
             </button>
         </form>

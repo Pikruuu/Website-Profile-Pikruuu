@@ -33,7 +33,7 @@ export default async function LoginPage() {
                     href="/"
                     className="font-body text-[10px] uppercase tracking-[0.16em] text-abu transition-colors hover:text-aksen"
                 >
-                    ← Kembali
+                    ← Back
                 </Link>
             </div>
 
@@ -50,14 +50,14 @@ export default async function LoginPage() {
                             Sign In<span className="text-aksen">.</span>
                         </h1>
                         <p className="mt-3 font-body text-[13px] leading-relaxed text-abu">
-                            Masuk untuk mengelola project dan publikasi di
+                            Sign in to manage projects and publications in the
                             portfolio.
                         </p>
 
                         <LoginForm />
 
                         <p className="mt-6 border-t border-hitam/10 pt-4 font-body text-[10px] uppercase tracking-[0.14em] text-abu">
-                            Akun dibuat manual oleh administrator.
+                            Accounts are created manually by the administrator.
                         </p>
                     </div>
                 </div>

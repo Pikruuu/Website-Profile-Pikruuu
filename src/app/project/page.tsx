@@ -54,7 +54,7 @@ export default async function ProjectPage() {
 
             <section
                 className="mx-auto w-full max-w-[90rem] px-4 py-10 sm:px-8 sm:py-12 lg:px-12 lg:py-14"
-                aria-label="Ringkasan portofolio"
+                aria-label="Portfolio summary"
             >
                 <SumProject stats={stats} />
             </section>

@@ -31,7 +31,7 @@ async function fetchPublicProjects(): Promise<ProjectRow[]> {
         .order("created_at", { ascending: false });
 
     if (error) {
-        throw new Error(`Gagal memuat projects: ${error.message}`);
+        throw new Error(`Failed to load projects: ${error.message}`);
     }
 
     return (data ?? []) as ProjectRow[];
@@ -69,7 +69,7 @@ export async function getPublicProjectBySlug(
         console.error(
             error instanceof Error
                 ? error.message
-                : "Gagal memuat project."
+                : "Failed to load project."
         );
 
         return null;
@@ -85,7 +85,7 @@ export async function getPortfolioData(): Promise<PortfolioData> {
         console.error(
             error instanceof Error
                 ? error.message
-                : "Gagal memuat projects."
+                : "Failed to load projects."
         );
     }
 
@@ -113,7 +113,7 @@ export async function getAdminProjects(): Promise<AdminProjectsResult> {
     if (!supabase) {
         return {
             projects: [],
-            error: "Supabase belum dikonfigurasi. Isi .env.local terlebih dahulu.",
+            error: "Supabase is not configured yet. Fill in .env.local first.",
         };
     }
 
@@ -146,7 +146,7 @@ export async function getAdminProjectById(
         .maybeSingle();
 
     if (error) {
-        console.error("Gagal memuat project:", error.message);
+        console.error("Failed to load project:", error.message);
         return null;
     }
 

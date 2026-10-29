@@ -12,7 +12,7 @@ export interface AboutContent {
 export const DEFAULT_ABOUT: AboutContent = {
     name: "Muhammad Fikri Al Fathoni",
     nickname: "Fikri",
-    education: "S1 Teknologi Informasi Telkom University (Semester 5)",
+    education: "Bachelor of Information Technology, Telkom University (5th Semester)",
     location: "Surabaya",
     email: "alfathonimuhammadfikri@gmail.com",
     summary:

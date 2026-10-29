@@ -88,14 +88,14 @@ export default function AchievementForm({
         }
 
         if (file.type !== CERTIFICATE_MIME_TYPE) {
-            setCertificateError("Sertifikat harus berformat PDF.");
+            setCertificateError("Certificate must be in PDF format.");
             setCertificateFileName(null);
             event.target.value = "";
             return;
         }
 
         if (file.size > MAX_CERTIFICATE_SIZE) {
-            setCertificateError("Ukuran sertifikat maksimal 5 MB.");
+            setCertificateError("Certificate size must be at most 5 MB.");
             setCertificateFileName(null);
             event.target.value = "";
             return;
@@ -120,15 +120,15 @@ export default function AchievementForm({
                     </Link>
                     <h1 className="mt-3 font-display text-2xl leading-tight sm:text-3xl">
                         {mode === "edit"
-                            ? "Edit Prestasi"
-                            : "Tambah Prestasi"}
+                            ? "Edit Achievement"
+                            : "Add Achievement"}
                         <span className="text-aksen">.</span>
                     </h1>
                 </div>
                 <p className="max-w-md font-body text-[13px] leading-relaxed text-abu">
                     {mode === "edit"
-                        ? "Perbarui detail prestasi. Sertifikat lama otomatis diganti jika kamu mengunggah berkas baru."
-                        : "Tambahkan judul, deskripsi, anggota tim, dan unggah sertifikat dalam format PDF."}
+                        ? "Update the achievement details. The old certificate is automatically replaced if you upload a new file."
+                        : "Add a title, description, team members, and upload a certificate in PDF format."}
                 </p>
             </div>
 
@@ -142,7 +142,7 @@ export default function AchievementForm({
 
                 <div className="grid gap-5 sm:grid-cols-2">
                     <label className="flex flex-col gap-2 sm:col-span-2">
-                        <span className={labelClass}>Judul prestasi</span>
+                        <span className={labelClass}>Achievement title</span>
                         <input
                             className={fieldClass}
                             name="title"
@@ -150,7 +150,7 @@ export default function AchievementForm({
                             required
                             maxLength={160}
                             autoFocus
-                            placeholder="Juara 1 kompetisi..."
+                            placeholder="1st place in a competition..."
                         />
                         {fieldError("title") ? (
                             <span className="font-body text-[11px] text-aksen">
@@ -160,14 +160,14 @@ export default function AchievementForm({
                     </label>
 
                     <label className="flex flex-col gap-2 sm:col-span-2">
-                        <span className={labelClass}>Deskripsi</span>
+                        <span className={labelClass}>Description</span>
                         <textarea
                             className={`${fieldClass} min-h-24 resize-y`}
                             name="description"
                             defaultValue={achievement?.description ?? ""}
                             maxLength={1000}
                             rows={4}
-                            placeholder="Deskripsi singkat prestasi..."
+                            placeholder="A short description of the achievement..."
                         />
                         {fieldError("description") ? (
                             <span className="font-body text-[11px] text-aksen">
@@ -178,7 +178,7 @@ export default function AchievementForm({
 
                     <label className="flex flex-col gap-2 sm:col-span-2">
                         <span className={labelClass}>
-                            Anggota tim / partner
+                            Team members / partners
                         </span>
                         <input
                             className={fieldClass}
@@ -187,10 +187,10 @@ export default function AchievementForm({
                                 ", "
                             )}
                             maxLength={1500}
-                            placeholder="Nama 1, Nama 2, Nama 3"
+                            placeholder="Name 1, Name 2, Name 3"
                         />
                         <span className={hintClass}>
-                            Pisahkan dengan koma. Kosongkan jika individu.
+                            Separate with commas. Leave empty if individual.
                         </span>
                         {fieldError("team_members") ? (
                             <span className="font-body text-[11px] text-aksen">
@@ -200,12 +200,12 @@ export default function AchievementForm({
                     </label>
 
                     <div className="flex flex-col gap-3 sm:col-span-2">
-                        <span className={labelClass}>Sertifikat PDF</span>
+                        <span className={labelClass}>Certificate PDF</span>
                         <div className="flex min-h-24 w-full flex-col justify-center gap-2 border border-hitam/20 bg-hitam/[0.04] px-4 py-5">
                             {certificateFileName ? (
                                 <>
                                     <p className="font-body text-[9px] uppercase tracking-[0.16em] text-abu">
-                                        File dipilih
+                                        File selected
                                     </p>
                                     <p className="font-body text-[12px] leading-relaxed [overflow-wrap:anywhere]">
                                         {certificateFileName}
@@ -218,11 +218,11 @@ export default function AchievementForm({
                                     rel="noopener noreferrer"
                                     className="w-fit border-b border-hitam/30 pb-1 font-body text-[10px] uppercase tracking-[0.16em] transition-colors hover:border-aksen hover:text-aksen"
                                 >
-                                    Lihat sertifikat saat ini ↗
+                                    View current certificate ↗
                                 </a>
                             ) : (
                                 <p className="font-body text-[11px] uppercase tracking-[0.14em] text-abu">
-                                    Belum ada sertifikat PDF
+                                    No PDF certificate yet
                                 </p>
                             )}
                         </div>
@@ -234,7 +234,7 @@ export default function AchievementForm({
                             onChange={handleCertificateChange}
                         />
                         <span className={hintClass}>
-                            PDF. Maksimal 5 MB.
+                            PDF. Maximum 5 MB.
                         </span>
                         {certificateFieldError ? (
                             <span className="font-body text-[11px] text-aksen">
@@ -245,7 +245,7 @@ export default function AchievementForm({
 
                     <label className="flex flex-col gap-2 sm:col-span-2">
                         <span className={labelClass}>
-                            URL sertifikat (opsional)
+                            Certificate URL (optional)
                         </span>
                         <input
                             className={fieldClass}
@@ -258,9 +258,8 @@ export default function AchievementForm({
                             placeholder="https://..."
                         />
                         <span className={hintClass}>
-                            Tautan eksternal PDF. Upload sertifikat akan
-                            diprioritaskan. Kosongkan untuk menghapus
-                            sertifikat.
+                            External PDF link. An uploaded certificate takes
+                            priority. Leave empty to remove the certificate.
                         </span>
                         {fieldError("certificate_url") ? (
                             <span className="font-body text-[11px] text-aksen">
@@ -275,7 +274,7 @@ export default function AchievementForm({
                         href="/admin"
                         className="inline-flex min-h-10 items-center justify-center border border-hitam/25 px-4 py-2.5 font-body text-[10px] uppercase tracking-[0.16em] transition-colors hover:border-aksen"
                     >
-                        Batal
+                        Cancel
                     </Link>
                     <button
                         type="submit"
@@ -283,10 +282,10 @@ export default function AchievementForm({
                         className="inline-flex min-h-10 items-center justify-center gap-2 border border-hitam bg-hitam px-5 py-2.5 font-body text-[10px] uppercase tracking-[0.16em] text-putih transition-colors hover:border-aksen hover:bg-aksen disabled:cursor-not-allowed disabled:opacity-60"
                     >
                         {pending
-                            ? "Menyimpan..."
+                            ? "Saving..."
                             : mode === "edit"
-                              ? "Simpan Perubahan"
-                              : "Tambah Prestasi"}
+                              ? "Save Changes"
+                              : "Add Achievement"}
                         <span aria-hidden="true">→</span>
                     </button>
                 </div>

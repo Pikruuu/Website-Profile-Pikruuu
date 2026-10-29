@@ -3,9 +3,9 @@ import "./globals.css";
 import SiteChrome from "@/components/SiteChrome";
 
 export const metadata: Metadata = {
-  title: "Muhammad Fikri Al Fathoni — Portofolio",
+  title: "Muhammad Fikri Al Fathoni — Portfolio",
   description:
-    "Portofolio Muhammad Fikri Al Fathoni, mahasiswa Teknologi Informasi dan developer yang berfokus pada AI, ML, data, IoT, dan robotics.",
+    "Portfolio of Muhammad Fikri Al Fathoni, an Information Technology student and developer focused on AI, ML, data, IoT, and robotics.",
 };
 
 export default function RootLayout({
@@ -14,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="id">
+    <html lang="en">
       <body className="min-h-dvh antialiased">
         <SiteChrome>{children}</SiteChrome>
       </body>

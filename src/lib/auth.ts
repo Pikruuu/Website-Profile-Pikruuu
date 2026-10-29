@@ -36,7 +36,7 @@ export async function requireAdminAction(): Promise<{
 
     if (!supabase) {
         throw new Error(
-            "Supabase belum dikonfigurasi. Isi .env.local terlebih dahulu."
+            "Supabase is not configured yet. Fill in .env.local first."
         );
     }
 
@@ -45,7 +45,7 @@ export async function requireAdminAction(): Promise<{
     } = await supabase.auth.getUser();
 
     if (!user || !isAdminEmail(user.email)) {
-        throw new Error("Sesi admin tidak valid. Silakan login ulang.");
+        throw new Error("Invalid admin session. Please sign in again.");
     }
 
     return { supabase, user };

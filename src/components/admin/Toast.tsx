@@ -31,7 +31,7 @@ export default function Toast({ message, tone, onClose }: ToastProps) {
             <button
                 type="button"
                 onClick={onClose}
-                aria-label="Tutup notifikasi"
+                aria-label="Close notification"
                 className="shrink-0 text-base leading-none opacity-70 transition-opacity hover:opacity-100"
             >
                 ×

@@ -14,7 +14,7 @@ import {
 
 export const dynamic = "force-dynamic";
 
-const dateFormatter = new Intl.DateTimeFormat("id-ID", {
+const dateFormatter = new Intl.DateTimeFormat("en-US", {
     day: "2-digit",
     month: "long",
     year: "numeric",
@@ -35,15 +35,15 @@ function formatPeriod(start: string | null, end: string | null): string {
     const endLabel = formatDateOnly(end);
 
     if (!startLabel && !endLabel) {
-        return "Belum ditentukan";
+        return "Not specified";
     }
 
     if (startLabel && !endLabel) {
-        return `${startLabel} — Sekarang`;
+        return `${startLabel} — Present`;
     }
 
     if (!startLabel && endLabel) {
-        return `Selesai ${endLabel}`;
+        return `Completed ${endLabel}`;
     }
 
     return `${startLabel} — ${endLabel}`;
@@ -61,7 +61,7 @@ export async function generateMetadata({
 
     if (!project) {
         return {
-            title: "Project tidak ditemukan — M. Fikri Al Fathoni",
+            title: "Project not found — M. Fikri Al Fathoni",
         };
     }
 
@@ -113,7 +113,7 @@ export default async function ProjectDetailPage({
                         className="inline-flex min-h-9 items-center justify-center gap-2 border border-hitam bg-hitam px-4 py-2 font-body text-[10px] uppercase tracking-[0.16em] text-putih transition-colors hover:border-aksen hover:bg-aksen"
                     >
                         <span aria-hidden="true">←</span>
-                        Project &amp; Publikasi
+                        Projects &amp; Publications
                     </Link>
 
                     <div className="mt-8 grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
@@ -147,7 +147,7 @@ export default async function ProjectDetailPage({
                             <dl className="mt-8 grid grid-cols-2 gap-2 sm:grid-cols-3">
                                 <div className="border border-hitam/15 bg-putih p-4 shadow-[8px_8px_0_-1px_rgba(33,33,33,0.04)]">
                                     <dt className="font-body text-[9px] uppercase tracking-[0.18em] text-abu">
-                                        Kategori
+                                        Category
                                     </dt>
                                     <dd className="mt-2 font-display text-sm leading-snug">
                                         {categoryLabel}
@@ -155,7 +155,7 @@ export default async function ProjectDetailPage({
                                 </div>
                                 <div className="border border-hitam/15 bg-putih p-4 shadow-[8px_8px_0_-1px_rgba(33,33,33,0.04)]">
                                     <dt className="font-body text-[9px] uppercase tracking-[0.18em] text-abu">
-                                        Periode
+                                        Period
                                     </dt>
                                     <dd className="mt-2 font-display text-sm leading-snug">
                                         {formatPeriod(
@@ -170,8 +170,8 @@ export default async function ProjectDetailPage({
                                     </dt>
                                     <dd className="mt-2 font-display text-sm leading-snug">
                                         {project.end_date
-                                            ? "Selesai"
-                                            : "Berjalan"}
+                                            ? "Completed"
+                                            : "Ongoing"}
                                     </dd>
                                 </div>
                             </dl>
@@ -205,8 +205,8 @@ export default async function ProjectDetailPage({
                                         </ul>
                                     ) : (
                                         <p className="mt-3 font-body text-[12px] leading-relaxed text-abu">
-                                            Belum ada teknologi yang
-                                            dicantumkan.
+                                            No technologies have been
+                                            listed.
                                         </p>
                                     )}
                                 </div>
@@ -258,7 +258,7 @@ export default async function ProjectDetailPage({
                         id="project-about"
                         className="mt-2 font-display text-2xl leading-tight sm:text-3xl"
                     >
-                        Tentang {isPublication ? "publikasi" : "project"}
+                        About this {isPublication ? "publication" : "project"}
                     </h2>
                     <p className="mt-4 whitespace-pre-line font-body text-[13px] leading-relaxed text-hitam/80 sm:text-base">
                         {project.description}
@@ -275,13 +275,13 @@ export default async function ProjectDetailPage({
                         <div className="max-w-3xl">
                             <p className="font-body text-[10px] uppercase tracking-[0.22em] text-aksen">
                                 <span className="mr-2">✦</span>
-                                Kontribusi
+                                Contribution
                             </p>
                             <h2
                                 id="project-contribution"
                                 className="mt-2 font-display text-2xl leading-tight sm:text-3xl"
                             >
-                                Tim / Partner
+                                Team / Partner
                             </h2>
                             <p className="mt-4 whitespace-pre-line font-body text-[13px] leading-relaxed text-hitam/80 sm:text-base">
                                 {project.team_contribution}
@@ -299,7 +299,7 @@ export default async function ProjectDetailPage({
                     <div>
                         <p className="font-body text-[10px] uppercase tracking-[0.22em] text-aksen">
                             <span className="mr-2">✦</span>
-                            Lampiran
+                            Attachments
                         </p>
                         <h2
                             id="project-evidence"
@@ -308,8 +308,8 @@ export default async function ProjectDetailPage({
                             Evidence
                         </h2>
                         <p className="mt-3 max-w-xl font-body text-[13px] leading-relaxed text-abu">
-                            Dokumentasi, sertifikat, laporan, dan tautan
-                            pendukung lainnya.
+                            Documentation, certificates, reports, and other
+                            supporting links.
                         </p>
                     </div>
 
@@ -343,8 +343,8 @@ export default async function ProjectDetailPage({
                         </ul>
                     ) : (
                         <p className="mt-6 border border-dashed border-hitam/25 px-5 py-8 font-body text-[13px] leading-relaxed text-abu">
-                            Belum ada evidence untuk{" "}
-                            {isPublication ? "publikasi" : "project"} ini.
+                            No evidence has been added for this{" "}
+                            {isPublication ? "publication" : "project"} yet.
                         </p>
                     )}
                 </div>

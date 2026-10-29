@@ -25,7 +25,7 @@ export default function AdminLoading() {
                     />
                 ))}
             </div>
-            <span className="sr-only">Memuat dashboard...</span>
+            <span className="sr-only">Loading dashboard...</span>
         </div>
     );
 }

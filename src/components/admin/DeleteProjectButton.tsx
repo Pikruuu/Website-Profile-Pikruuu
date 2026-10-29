@@ -65,7 +65,7 @@ export default function DeleteProjectButton({
                 onClick={() => setOpen(true)}
                 className="inline-flex min-h-9 items-center justify-center border border-aksen/30 px-3 py-2 font-body text-[10px] uppercase tracking-[0.16em] text-aksen transition-colors hover:border-aksen hover:bg-aksen hover:text-putih"
             >
-                Hapus
+                Delete
             </button>
 
             {open ? (
@@ -82,19 +82,19 @@ export default function DeleteProjectButton({
                         onClick={(event) => event.stopPropagation()}
                     >
                         <p className="font-body text-[10px] uppercase tracking-[0.22em] text-aksen">
-                            ✦ Konfirmasi
+                            ✦ Confirmation
                         </p>
                         <h2
                             id={`delete-title-${id}`}
                             className="mt-3 font-display text-2xl leading-tight"
                         >
-                            Hapus project?
+                            Delete project?
                         </h2>
                         <p className="mt-3 font-body text-[13px] leading-relaxed text-abu">
                             <span className="font-body text-hitam">
                                 {title}
                             </span>{" "}
-                            akan dihapus permanen beserta gambar di Storage.
+                            will be permanently deleted along with its image in Storage.
                         </p>
 
                         <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
@@ -104,7 +104,7 @@ export default function DeleteProjectButton({
                                 disabled={pending}
                                 className="inline-flex min-h-10 items-center justify-center border border-hitam/25 px-4 py-2.5 font-body text-[10px] uppercase tracking-[0.16em] transition-colors hover:border-aksen disabled:cursor-not-allowed disabled:opacity-60"
                             >
-                                Batal
+                                Cancel
                             </button>
                             <button
                                 type="button"
@@ -112,7 +112,7 @@ export default function DeleteProjectButton({
                                 disabled={pending}
                                 className="inline-flex min-h-10 items-center justify-center border border-aksen bg-aksen px-4 py-2.5 font-body text-[10px] uppercase tracking-[0.16em] text-putih transition-colors hover:border-hitam hover:bg-hitam disabled:cursor-not-allowed disabled:opacity-60"
                             >
-                                {pending ? "Menghapus..." : "Hapus"}
+                                {pending ? "Deleting..." : "Delete"}
                             </button>
                         </div>
                     </div>

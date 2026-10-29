@@ -54,7 +54,7 @@ async function fetchSiteSettings(): Promise<SiteSettingsRow | null> {
         .maybeSingle();
 
     if (error) {
-        throw new Error(`Gagal memuat site settings: ${error.message}`);
+        throw new Error(`Failed to load site settings: ${error.message}`);
     }
 
     return normalizeSettings(data as SiteSettingsRow | null);
@@ -88,7 +88,7 @@ export async function getAdminSiteSettings(): Promise<AdminSiteSettingsResult> {
     if (!supabase) {
         return {
             settings: emptySettings,
-            error: "Supabase belum dikonfigurasi. Isi .env.local terlebih dahulu.",
+            error: "Supabase is not configured yet. Fill in .env.local first.",
         };
     }
 

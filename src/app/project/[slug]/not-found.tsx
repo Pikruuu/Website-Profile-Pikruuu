@@ -9,17 +9,17 @@ export default function ProjectNotFound() {
                     404 / Not found
                 </p>
                 <h1 className="mt-3 font-display text-3xl leading-tight sm:text-4xl">
-                    Project tidak ditemukan<span className="text-aksen">.</span>
+                    Project not found<span className="text-aksen">.</span>
                 </h1>
                 <p className="mt-4 font-body text-[13px] leading-relaxed text-abu sm:text-sm">
-                    Halaman ini mungkin sudah dipindahkan, diganti slug-nya,
-                    atau dihapus dari portofolio.
+                    This page may have been moved, renamed, or removed from
+                    the portfolio.
                 </p>
                 <Link
                     href="/project"
                     className="mt-6 inline-flex min-h-10 items-center justify-center gap-2 border border-hitam bg-hitam px-5 py-2.5 font-body text-[10px] uppercase tracking-[0.16em] text-putih transition-colors hover:border-aksen hover:bg-aksen"
                 >
-                    Lihat semua project
+                    View all projects
                     <span aria-hidden="true">→</span>
                 </Link>
             </div>

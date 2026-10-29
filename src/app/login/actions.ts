@@ -10,8 +10,8 @@ export interface LoginState {
 }
 
 const loginSchema = z.object({
-    email: z.email("Format email tidak valid."),
-    password: z.string().min(1, "Password wajib diisi."),
+    email: z.email("Invalid email format."),
+    password: z.string().min(1, "Password is required."),
 });
 
 export async function loginAction(
@@ -27,7 +27,7 @@ export async function loginAction(
         return {
             error:
                 parsed.error.issues[0]?.message ??
-                "Email atau password tidak valid.",
+                "Invalid email or password.",
         };
     }
 
@@ -35,7 +35,7 @@ export async function loginAction(
 
     if (!supabase) {
         return {
-            error: "Supabase belum dikonfigurasi. Isi .env.local terlebih dahulu.",
+            error: "Supabase is not configured yet. Fill in .env.local first.",
         };
     }
 
@@ -46,15 +46,15 @@ export async function loginAction(
     if (error || !data.user) {
         return {
             error: error?.message.toLowerCase().includes("invalid login")
-                ? "Email atau password salah."
-                : (error?.message ?? "Gagal masuk. Silakan coba lagi."),
+                ? "Incorrect email or password."
+                : (error?.message ?? "Failed to sign in. Please try again."),
         };
     }
 
     if (!isAdminEmail(data.user.email)) {
         await supabase.auth.signOut();
 
-        return { error: "Akun ini tidak memiliki akses admin." };
+        return { error: "This account does not have admin access." };
     }
 
     redirect("/admin");

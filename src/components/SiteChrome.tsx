@@ -25,7 +25,7 @@ export default function SiteChrome({
                 href="#konten"
                 className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:bg-hitam focus:px-4 focus:py-2 focus:font-body focus:text-xs focus:text-putih"
             >
-                Lompat ke konten
+                Skip to content
             </a>
             <Navbar />
             <div id="konten" className="flex flex-1 flex-col">
